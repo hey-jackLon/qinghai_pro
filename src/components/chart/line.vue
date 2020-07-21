@@ -1,0 +1,55 @@
+<template>
+  <div class="chart-wrap">
+    <div id="line" class="chart-container" />
+  </div>
+</template>
+
+<script>
+export default {
+  props: {
+    line: {
+      type: Object,
+      default: function() {
+        return {}
+      }
+    }
+  },
+  data() {
+    return {
+      lineData: this.line
+    }
+  },
+  watch: {
+    lineData: {
+      handler: function(n, o) {
+        debugger
+      },
+      deep: true
+    }
+  },
+  mounted() {
+    this.initEcharts('line', this.lineData)
+  },
+  methods: {
+    initEcharts(id, options) {
+      // 基于准备好的dom，初始化echarts实例
+      const myChart = this.$echarts.init(document.getElementById(id))
+      // 绘制图表
+      myChart.setOption(options)
+    }
+  }
+}
+</script>
+
+<style lang="scss" scoped>
+.chart{
+  &-wrap{
+    width: 100%;
+    height: 100%;
+  }
+  &-container{
+    width: 100%;
+    height: 100%;
+  }
+}
+</style>
