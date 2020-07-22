@@ -74,7 +74,7 @@ export const constantRoutes = [
   {
     path: '/roadtraveltrafficanalyze',
     component: Layout,
-    redirect: '/greateventseffectanalyze/travelroadmanager',
+    redirect: '/roadtraveltrafficanalyze/travelroadmanager',
     name: 'RoadTravelTrafficAnalyze',
     meta: { title: '公路旅游交通量分析', icon: 'el-icon-s-help' },
     children: [
