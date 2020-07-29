@@ -101,32 +101,23 @@ export default {
   },
   methods: {
     confirm() {
-      this.$confirm(this.type === 'add' ? '确认新增?' : '确认修改?', '确认信息', {
-        type: 'warning'
-      }).then(async() => {
-        this.dialogFormVisible = false
-        this.$emit('confirm', this.form)
-      })
-
       this.$confirm(this.type === 'add' ? '确认新增?' : '确认修改?', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'
+      }).then(() => {
+        this.dialogFormVisible = false
+        this.$emit('confirm', this.form)
+        this.$message({
+          type: 'success',
+          message: this.type === 'add' ? '新增成功' : '修改成功'
+        })
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: this.type === 'add' ? '已取消新增' : '已取消修改'
+        })
       })
-        .then(() => {
-          this.dialogFormVisible = false
-          this.$emit('confirm', this.form)
-          this.$message({
-            type: 'success',
-            message: this.type === 'add' ? '新增成功' : '修改成功'
-          })
-        })
-        .catch(() => {
-          this.$message({
-            type: 'info',
-            message: this.type === 'add' ? '已取消新增' : '已取消修改'
-          })
-        })
     }
   }
 }
