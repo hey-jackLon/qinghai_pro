@@ -5,7 +5,7 @@
 </template>
 
 <script>
-import ArcgisMap from '@/components/map/_index'
+import ArcgisMap from '@/components/map/_index2'
 export default {
   components: { ArcgisMap }
 }

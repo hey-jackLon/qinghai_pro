@@ -21,8 +21,7 @@ export default {
           'esri/views/MapView',
           'dojo/domReady!'
         ],
-        'http://localhost:8080/arcgis_js_v410_api/arcgis_js_api/library/4.10/'
-        // 'https://js.arcgis.com/4.7/'
+        'https://js.arcgis.com/4.7/'
       ).then(([
         Map,
         esriConfig,
