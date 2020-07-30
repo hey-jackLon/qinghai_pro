@@ -1,11 +1,11 @@
 <template>
-  <div style="width:500px;height:500px;">
+  <div style="width:100%;height:750px;">
     <arcgis-map />
   </div>
 </template>
 
 <script>
-import ArcgisMap from '@/components/map/index'
+import ArcgisMap from '@/components/map/_index'
 export default {
   components: { ArcgisMap }
 }
