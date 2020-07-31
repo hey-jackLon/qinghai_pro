@@ -27,7 +27,7 @@ export default {
           'esri/geometry/Point',
           'dojo/domReady!'
         ],
-        'https://js.arcgis.com/4.7/'
+        { css: true }
       ).then(([
         Map,
         Basemap,
@@ -47,13 +47,13 @@ export default {
         const spatialReference = new SpatialReference({ wkid: 3857 })
         // 实例化初始范围
         // let extent = new Extent({xmax: 13371824.0074, xmin: 8175464.5009, ymax: 5180434.2587, ymin: 3109500.2107,spatialReference});
-        const extent = new Extent(-20037508.342787, -20037508.342787, 20037508.342787, 20037508.342787, new SpatialReference({ wkid: 3857 }))
+        // const extent = new Extent(-20037508.342787, -20037508.342787, 20037508.342787, 20037508.342787, new SpatialReference({ wkid: 3857 }))
         const tileInfo = new TileInfo({
           'cols': 256,
           'rows': 256,
           'compressionQuality': 0,
-          // 'origin': new Point(-20037508.342787, 20037508.342787, new SpatialReference({ wkid: 3857 })),
-          'origin': { x: -20037508.342787, y: 20037508.342787 },
+          'origin': new Point(-20037508.342787, 20037508.342787, new SpatialReference({ wkid: 3857 })),
+          // 'origin': { x: -20037508.342787, y: 20037508.342787 },
           'spatialReference': { wkid: 3857 },
           'lods': [
             { 'level': 0, 'resolution': 156543.033928, 'scale': 591657527.591555 },
@@ -87,22 +87,22 @@ export default {
         const mapControl = new Map({
           // spatialReference:spatialReference,
           basemap: {
-            baseLayers: [digitalLayer, digitalLayer]
+            baseLayers: [digitalLayer]
           }
         })
         // 实例化MapView对象
         this.view = new MapView({
           map: mapControl,
           container: this.$el,
-          center: [110.1, 23.8],
-          extent: extent,
-          zoom: 2
+          center: [116.41, 39.90],
+          // extent: extent,
+          zoom: 10
         })
       })
   },
   beforeDestroy() {
     if (this.view) {
-      // destroy the map view
+      // 销毁地图视图
       this.view.container = null
     }
   }
