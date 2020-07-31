@@ -1,0 +1,24 @@
+{
+  "editor.fontSize": 18,
+  "prettier.eslintIntegration": true,
+  "search.exclude": {
+    "**/dist": true
+  },
+  "vetur.validation.template": false,
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": true,
+    "eslint.autoFixOnSave": true, //保存时自动修复
+    "eslint.validate": [
+      "javascript",
+      "javascriptreact",
+      {
+        "language": "html",
+        "autoFix": true
+      },
+      {
+        "language": "vue",
+        "autoFix": true
+      }
+    ],
+  }
+}
