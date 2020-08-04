@@ -18,7 +18,8 @@ export default {
     }
   },
   mounted() {
-    this.loadArcgis()
+    this.initMap()
+    // this.loadArcgis()
   },
   beforeDestroy() {
     if (this.view) {
@@ -27,19 +28,19 @@ export default {
     }
   },
   methods: {
-    loadArcgis() {
-      esriLoader.loadCss('https://js.arcgis.com/4.7/esri/css/main.css') // 该方法用于加载 arcgis 依赖的js,css 等
-      return esriLoader.loadScript({ // 加载js
-        url: 'https://js.arcgis.com/4.7/dojo/dojo.js',
-        dojoConfig: {
-          async: true
-        }
-      }).then(// dojo加载完成之后，载入高德地图类
-        () => this.initMap()
-      ).catch(
-        err => console.log(err)
-      )
-    },
+    // loadArcgis() {
+    //   esriLoader.loadCss('https://js.arcgis.com/4.7/esri/css/main.css') // 该方法用于加载 arcgis 依赖的js,css 等
+    //   return esriLoader.loadScript({ // 加载js
+    //     url: 'https://js.arcgis.com/4.7/dojo/dojo.js',
+    //     dojoConfig: {
+    //       async: true
+    //     }
+    //   }).then(// dojo加载完成之后，载入高德地图类
+    //     () => this.initMap()
+    //   ).catch(
+    //     err => console.log(err)
+    //   )
+    // },
 
     initMap() {
       return echartsLayer().then(// 高德地图类加载完成后和其他地图初始化相关模块一块传入
@@ -49,8 +50,7 @@ export default {
             'esri/Basemap',
             'esri/layers/TileLayer',
             'esri/views/SceneView',
-            'esri/views/MapView',
-            'dojo/domReady!'
+            'esri/views/MapView'
           ]).then(
             (params) => this._initMap([echartsLayer, ...params])
           )

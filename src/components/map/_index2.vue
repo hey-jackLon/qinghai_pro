@@ -3,14 +3,23 @@
 </template>
 
 <script>
-import esriLoader from 'esri-loader'
+import { loadModules } from 'esri-loader'
 // import GaoDeLayer from './GaoDeLayer'
 
 export default {
   name: 'WebMap',
   mounted() {
-    esriLoader
-      .loadModules(
+    this.initMap()
+  },
+  beforeDestroy() {
+    if (this.view) {
+      // 销毁地图视图
+      this.view.container = null
+    }
+  },
+  methods: {
+    initMap() {
+      loadModules(
         [
           'esri/Map',
           'esri/Basemap',
@@ -24,10 +33,8 @@ export default {
           'esri/layers/support/TileInfo',
           'esri/Ground',
           'dojo/on',
-          'esri/geometry/Point',
-          'dojo/domReady!'
-        ],
-        { css: true }
+          'esri/geometry/Point'
+        ]
       ).then(([
         Map,
         Basemap,
@@ -43,7 +50,7 @@ export default {
         on,
         Point
       ]) => {
-        // 实例化坐标系
+      // 实例化坐标系
         const spatialReference = new SpatialReference({ wkid: 3857 })
         // 实例化初始范围
         // let extent = new Extent({xmax: 13371824.0074, xmin: 8175464.5009, ymax: 5180434.2587, ymin: 3109500.2107,spatialReference});
@@ -85,7 +92,7 @@ export default {
           spatialReference: spatialReference
         })
         const mapControl = new Map({
-          // spatialReference:spatialReference,
+        // spatialReference:spatialReference,
           basemap: {
             baseLayers: [digitalLayer]
           }
@@ -99,11 +106,6 @@ export default {
           zoom: 10
         })
       })
-  },
-  beforeDestroy() {
-    if (this.view) {
-      // 销毁地图视图
-      this.view.container = null
     }
   }
 }

@@ -4,7 +4,7 @@
       <el-table
         :data="tableData"
         stripe
-        border="1"
+        border
         style="width: 100%"
       >
         <el-table-column

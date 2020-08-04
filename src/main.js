@@ -16,6 +16,15 @@ import '@/permission' // permission control
 
 import echarts from 'echarts'
 
+import { loadScript } from 'esri-loader'
+import { loadCss } from 'esri-loader'
+// preload the ArcGIS API
+const options = {
+  url: 'https://js.arcgis.com/4.7/dojo/dojo.js'
+}
+
+loadScript(options)
+loadCss('https://js.arcgis.com/4.7/esri/css/main.css')
 /**
  * If you don't want to use mock-server
  * you want to use MockJs for mock api
