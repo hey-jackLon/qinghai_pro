@@ -5,7 +5,7 @@
 </template>
 
 <script>
-import Map from '@/components/MigrationMap/index'
+import Map from '@/components/MigrationMap/index2'
 import series from './serise.js'
 export default {
   components: { Map },

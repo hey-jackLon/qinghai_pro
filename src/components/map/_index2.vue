@@ -91,7 +91,7 @@ export default {
           tileInfo: tileInfo,
           spatialReference: spatialReference
         })
-        const mapControl = new Map({
+        const GDMAP = new Map({
         // spatialReference:spatialReference,
           basemap: {
             baseLayers: [digitalLayer]
@@ -99,7 +99,7 @@ export default {
         })
         // 实例化MapView对象
         this.view = new MapView({
-          map: mapControl,
+          map: GDMAP,
           container: this.$el,
           center: [116.41, 39.90],
           // extent: extent,

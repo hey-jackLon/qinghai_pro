@@ -19,11 +19,9 @@ import echarts from 'echarts'
 import { loadScript } from 'esri-loader'
 import { loadCss } from 'esri-loader'
 // preload the ArcGIS API
-const options = {
+loadScript({
   url: 'https://js.arcgis.com/4.7/dojo/dojo.js'
-}
-
-loadScript(options)
+})
 loadCss('https://js.arcgis.com/4.7/esri/css/main.css')
 /**
  * If you don't want to use mock-server
@@ -33,10 +31,10 @@ loadCss('https://js.arcgis.com/4.7/esri/css/main.css')
  * Currently MockJs will be used in the production environment,
  * please remove it before going online ! ! !
  */
-if (process.env.NODE_ENV === 'production') {
-  const { mockXHR } = require('../mock')
-  mockXHR()
-}
+// if (process.env.NODE_ENV === 'production') {
+//   const { mockXHR } = require('../mock')
+//   mockXHR()
+// }
 
 // set ElementUI lang to EN
 Vue.use(ElementUI)

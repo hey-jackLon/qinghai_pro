@@ -81,6 +81,7 @@ export default {
           }
         })
         esriConfig.request.corsEnabledServers.push('webrd01.is.autonavi.com')
+        esriConfig.request.corsEnabledServers.push('webst01.is.autonavi.com')
 
         // 创建TintLayer的新实例并设置其属性
         const digitallTileLayer = new TintLayer({ // 数字图层
@@ -88,17 +89,17 @@ export default {
           tint: new Color('#004FBB'),
           title: '高德'
         })
-        // const satelliteTileLayer = new TintLayer({// 卫星图层
-        //   urlTemplate: 'http://webst01.is.autonavi.com/appmaptile?style=6&x={x}&y={y}&z={z}',
-        //   tint: new Color('#004FBB'),
-        //   title: '高德'
-        // })
+        const satelliteTileLayer = new TintLayer({ // 卫星图层
+          urlTemplate: 'http://webst01.is.autonavi.com/appmaptile?style=6&x={x}&y={y}&z={z}',
+          tint: new Color('#004FBB'),
+          title: '高德'
+        })
 
-        // const stamenTileLayer = new TintLayer({
-        //   urlTemplate: 'http://webst01.is.autonavi.com/appmaptile?style=8&x={x}&y={y}&z={z}',
-        //   tint: new Color('#004FBB'),
-        //   title: '高德'
-        // })
+        const stamenTileLayer = new TintLayer({
+          urlTemplate: 'http://webst01.is.autonavi.com/appmaptile?style=8&x={x}&y={y}&z={z}',
+          tint: new Color('#004FBB'),
+          title: '高德'
+        })
 
         // const map = new Map({
         //   basemap: 'topo-vector'

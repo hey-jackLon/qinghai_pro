@@ -39,7 +39,7 @@
 </template>
 
 <script>
-import ArcgisMap from '@/components/map/_index2'
+import ArcgisMap from '@/components/map/_index'
 export default {
   components: { ArcgisMap },
   data() {
