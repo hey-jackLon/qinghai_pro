@@ -3,9 +3,10 @@
     <div class="container-left">
       <el-table
         :data="tableData"
-        stripe
         border
         style="width: 100%"
+        highlight-current-row
+        @current-change="tableClick"
       >
         <el-table-column
           prop="events"
@@ -24,7 +25,7 @@
             <el-button size="mini" @click="$emit('scopesetting',{index:scope.$index, row:scope.row})">
               范围
             </el-button>
-            <el-button size="mini" type="danger" @click="$emit('deletesetting',{index:scope.$index, row:scope.row})">
+            <el-button size="mini" type="danger" @click="stationsetting(scope.$index,scope.row)">
               站点
             </el-button>
           </template>
@@ -32,23 +33,110 @@
       </el-table>
     </div>
     <div class="container-right">
-      <arcgis-map />
+      <arcgis-map ref="arcMap" :station-data="stationData" />
     </div>
-
+    <ehl-dialog
+      :type="type"
+      :opendialog="isOpen"
+      :row-data="rowData"
+      @closedialog="closeDialog"
+      @confirm="dialogConfirm"
+    />
   </div>
 </template>
 
 <script>
 import ArcgisMap from '@/components/map/_index'
+import ehlDialog from './dialog'
 export default {
-  components: { ArcgisMap },
+  components: { ArcgisMap, ehlDialog },
   data() {
     return {
-      tableData: [{
-        events: '2019年环青海湖公路国际公路自行车赛',
-        scope: '青海湖周边公路',
-        stations: '青海湖-南收费站'
-      }]
+      tableData: [
+        {
+          events: '2019年环青海湖公路国际公路自行车赛',
+          scope: '青海湖周边公路',
+          stations: '青海湖-南收费站',
+          stationData: [
+            {
+              'lat': '36.963468',
+              'lon': '100.855518',
+              'name': '海北藏族自治州'
+            },
+            {
+              'lat': '37.318157',
+              'lon': '100.141407',
+              'name': '刚察县'
+            }
+          ]
+        },
+        {
+          events: '2018年环青海湖公路国际公路自行车赛',
+          scope: '青海湖周边公路',
+          stations: '青海湖-南收费站',
+          stationData: [
+            {
+              'lat': '36.271261',
+              'lon': '100.616565',
+              'name': '海南藏族自治州'
+            },
+            {
+              'lat': '37.296311',
+              'lon': '99.037281',
+              'name': '天峻县'
+            },
+            {
+              'lat': '36.921759',
+              'lon': '98.479724',
+              'name': '乌兰县'
+            }
+          ]
+        },
+        {
+          events: '2017年环青海湖公路国际公路自行车赛',
+          scope: '青海湖周边公路',
+          stations: '青海湖-南收费站',
+          stationData: [
+            {
+              'lat': '36.677639',
+              'lon': '101.248279',
+              'name': '湟源县'
+            },
+            {
+              'lat': '36.921759',
+              'lon': '101.687732',
+              'name': '大通回族自治县'
+            }]
+        }
+      ],
+      stationData: [],
+      isOpen: false,
+      title: '',
+      type: ''
+
+    }
+  },
+  methods: {
+    tableClick(val) {
+      this.$refs.arcMap
+      this.stationData = val.stationData
+    },
+    stationsetting(index, row) {
+      this.isOpen = true
+      this.type = 'add'
+      this.rowData = row
+    },
+    closeDialog(e) {
+      this.isOpen = e
+    },
+    dialogConfirm(e) {
+      if (e.index === 0 || e.index) {
+        const index = e.index
+        delete e.index
+        this.tableData.splice(index, 1, e)
+      } else {
+        this.tableData.unshift(e)
+      }
     }
   }
 }
