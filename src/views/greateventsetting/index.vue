@@ -35,12 +35,17 @@
     <div class="container-right">
       <arcgis-map ref="arcMap" :station-data="stationData" />
     </div>
-    <ehl-dialog
-      :type="type"
+    <!-- <ehl-dialog
       :opendialog="isOpen"
-      :row-data="rowData"
+      :dialog-title="title"
       @closedialog="closeDialog"
       @confirm="dialogConfirm"
+    /> -->
+    <ehl-dialog
+      v-if="isOpen"
+      :dialog-title="title"
+      @confirm="dialogConfirm"
+      @cancle="dialogCancle"
     />
   </div>
 </template>
@@ -111,9 +116,8 @@ export default {
       ],
       stationData: [],
       isOpen: false,
-      title: '',
-      type: ''
-
+      type: '',
+      title: ''
     }
   },
   methods: {
@@ -123,20 +127,24 @@ export default {
     },
     stationsetting(index, row) {
       this.isOpen = true
-      this.type = 'add'
-      this.rowData = row
+      this.title = row.events
     },
     closeDialog(e) {
       this.isOpen = e
     },
     dialogConfirm(e) {
-      if (e.index === 0 || e.index) {
-        const index = e.index
-        delete e.index
-        this.tableData.splice(index, 1, e)
-      } else {
-        this.tableData.unshift(e)
-      }
+      this.isOpen = false
+      // if (e.index === 0 || e.index) {
+      //   const index = e.index
+      //   delete e.index
+      //   this.tableData.splice(index, 1, e)
+      // } else {
+      //   this.tableData.unshift(e)
+      // }
+    },
+    dialogCancle(e) {
+      debugger
+      this.isOpen = false
     }
   }
 }

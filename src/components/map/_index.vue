@@ -4,6 +4,7 @@
 
 <script>
 import { loadModules } from 'esri-loader'
+import { bind } from 'echarts-gl'
 // import GaoDeLayer from './GaoDeLayer'
 
 export default {
@@ -125,6 +126,8 @@ export default {
       this.Graphic = Graphic
       this.map.add(this.stationLayer)
       this.initMarkers()
+
+      this.graphicLayerClick(this, this.view, this.stationLayer)
     },
     initMarkers() {
       if (this.stationLayer) {
@@ -135,8 +138,8 @@ export default {
         var simpleMarkerSymbol = {
           type: 'picture-marker',
           url: require('@/assets/map/img/camera2.png'),
-          width: '20px',
-          height: '20px'
+          width: '30px',
+          height: '30px'
         }
         for (var i = 0; i < data.length; i++) {
           graphics.push(new this.Graphic({
@@ -154,6 +157,39 @@ export default {
       } else {
         return
       }
+    },
+    graphicLayerClick(that, view, layer) {
+      view.on(['click'], function(event) {
+        view.hitTest(event).then(function(response) {
+          if (response.results.length) {
+            //  debugger
+            var graphic = response.results.filter(function(result) {
+              return result.graphic.layer === layer
+            })[0].graphic
+            if (graphic) {
+              if (graphic.attributes.isChoose) {
+                graphic.symbol = {
+                  type: 'picture-marker',
+                  url: require('@/assets/map/img/camera2.png'),
+                  width: '30px',
+                  height: '30px'
+                }
+                graphic.attributes.isChoose = false
+              } else {
+                graphic.symbol = {
+                  type: 'picture-marker',
+                  url: require('@/assets/map/img/camera3.png'),
+                  width: '30px',
+                  height: '30px'
+                }
+                graphic.attributes.isChoose = true
+              }
+
+              that.$emit('getStationInfo', graphic.attributes)
+            }
+          }
+        })
+      })
     }
   }
 }
