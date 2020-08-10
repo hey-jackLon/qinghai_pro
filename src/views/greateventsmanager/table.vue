@@ -5,16 +5,20 @@
     </div>
     <el-table :data="tabledata" border style="width: 100%">
       <el-table-column type="index" width="50" label="#" />
-      <el-table-column prop="event_name" label="重大事件" />
+      <el-table-column prop="eventName" label="重大事件" />
       <el-table-column label="时间范围">
         <template slot-scope="scope">
-          <el-tag type="info">{{ scope.row.time[0] }}</el-tag>
+          <el-tag type="info">{{ scope.row.eventEtime }}</el-tag>
           -
-          <el-tag type="info">{{ scope.row.time[1] }}</el-tag>
+          <el-tag type="info">{{ scope.row.eventStime }}</el-tag>
         </template>
       </el-table-column>
-      <el-table-column prop="impact" label="影响范围" />
-      <el-table-column prop="stations" label="覆盖站点" />
+      <el-table-column prop="eventScope" label="影响范围" />
+      <el-table-column label="覆盖站点">
+        <template slot-scope="scope">
+          <el-tag v-for="item in scope.row.obStationList" :key="item.gczbs" type="info">{{ item.lxmc }}</el-tag>
+        </template>
+      </el-table-column>
       <el-table-column label="操作">
         <template slot-scope="scope">
           <el-button size="mini" @click="$emit('update',{index:scope.$index, row:scope.row})">

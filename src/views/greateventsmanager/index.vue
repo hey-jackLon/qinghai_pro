@@ -14,22 +14,22 @@
 <script>
 import ehlTable from './table'
 import ehlDialog from './dialog'
+import { getMajorEventList } from '@/api/greateventsmanager/index'
 export default {
   components: { ehlTable, ehlDialog },
   data() {
     return {
-      tableData: [
-        {
-          event_name: '2019年环青海湖公路国际公路自行车赛',
-          time: ['2020-07-22', '2020-07-23'],
-          impact: '公路1、高速2、... ',
-          stations: '站点1、站点4、... ...'
-        }
-      ],
+      tableData: [],
       isOpen: false,
       form: {},
       type: ''
     }
+  },
+  mounted() {
+    getMajorEventList().then(res => {
+      // debugger
+      this.tableData = res
+    })
   },
   methods: {
     handleAdd(e) {
