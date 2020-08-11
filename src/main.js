@@ -20,9 +20,9 @@ import { loadScript } from 'esri-loader'
 import { loadCss } from 'esri-loader'
 // preload the ArcGIS API
 loadScript({
-  url: 'https://js.arcgis.com/4.7/dojo/dojo.js'
+  url: 'https://js.arcgis.com/4.16/dojo/dojo.js'
 })
-loadCss('https://js.arcgis.com/4.7/esri/css/main.css')
+loadCss('https://js.arcgis.com/4.16/esri/themes/light/main.css')
 /**
  * If you don't want to use mock-server
  * you want to use MockJs for mock api

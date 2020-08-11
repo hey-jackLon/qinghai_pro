@@ -21,7 +21,8 @@ export default {
       map: null,
       view: null,
       stationLayer: null,
-      Graphic: null
+      Graphic: null,
+      scopedObject: null
     }
   },
   watch: {
@@ -42,14 +43,14 @@ export default {
   },
   methods: {
     async initMap() {
-      const [Map, esriConfig, esriRequest, Color, BaseTileLayer, MapView, GraphicsLayer, Graphic] = await loadModules(['esri/Map',
+      const [Map, esriConfig, esriRequest, Color, BaseTileLayer, MapView, GraphicsLayer, Sketch] = await loadModules(['esri/Map',
         'esri/config',
         'esri/request',
         'esri/Color',
         'esri/layers/BaseTileLayer',
         'esri/views/MapView',
         'esri/layers/GraphicsLayer',
-        'esri/Graphic',
+        'esri/widgets/Sketch',
         'dojo/domReady!'])
       const TintLayer = BaseTileLayer.createSubclass({
         properties: {
@@ -101,7 +102,6 @@ export default {
         }
       })
       esriConfig.request.corsEnabledServers.push('webrd01.is.autonavi.com')
-      // esriConfig.request.corsEnabledServers.push('webst01.is.autonavi.com')
 
       // 创建TintLayer的新实例并设置其属性
       const digitallTileLayer = new TintLayer({ // 数字图层
@@ -110,6 +110,7 @@ export default {
         title: '高德'
       })
 
+      this.stationLayer = new GraphicsLayer()
       this.map = new Map({
         layers: [digitallTileLayer]
       })
@@ -121,74 +122,53 @@ export default {
         zoom: 9
       })
 
-      this.stationLayer = new GraphicsLayer()
-      this.Graphic = Graphic
+      // Sketch widget
       this.map.add(this.stationLayer)
-      this.initMarkers()
-
-      this.graphicLayerClick(this, this.view, this.stationLayer)
-    },
-    initMarkers() {
-      if (this.stationLayer) {
-        const data = this.stationData
-        if (data.length === 0) return
-        this.stationLayer.removeAll()
-        var graphics = []
-        var simpleMarkerSymbol = {
-          type: 'picture-marker',
-          url: require('@/assets/map/img/camera2.png'),
-          width: '30px',
-          height: '30px'
-        }
-        for (var i = 0; i < data.length; i++) {
-          graphics.push(new this.Graphic({
-            geometry: {
-              type: 'point',
-              latitude: data[i].lat,
-              longitude: data[i].lon
-            },
-            symbol: simpleMarkerSymbol,
-            attributes: data[i]
-          }))
-        }
-
-        this.stationLayer.addMany(graphics)
-      } else {
-        return
-      }
-    },
-    graphicLayerClick(that, view, layer) {
-      view.on(['click'], function(event) {
-        view.hitTest(event).then(function(response) {
-          if (response.results.length) {
-            //  debugger
-            var graphic = response.results.filter(function(result) {
-              return result.graphic.layer === layer
-            })[0].graphic
-            if (graphic) {
-              if (graphic.attributes.isChoose) {
-                graphic.symbol = {
-                  type: 'picture-marker',
-                  url: require('@/assets/map/img/camera2.png'),
-                  width: '30px',
-                  height: '30px'
-                }
-                graphic.attributes.isChoose = false
-              } else {
-                graphic.symbol = {
-                  type: 'picture-marker',
-                  url: require('@/assets/map/img/camera3.png'),
-                  width: '30px',
-                  height: '30px'
-                }
-                graphic.attributes.isChoose = true
-              }
-
-              that.$emit('getStationInfo', graphic.attributes)
-            }
-          }
-        })
+      this.sketch = new Sketch({
+        view: this.view,
+        layer: this.stationLayer,
+        availableCreateTools: ['polygon', 'rectangle', 'circle'],
+        creationMode: 'single'
       })
+
+      // Add widget to the view
+      this.view.ui.add(this.sketch, 'top-right')
+      this.sketch.on('create', function(event) {
+        if (event.state === 'complete') {
+          if (!this.scopedObject) {
+            this.scopedObject = event.graphic
+            this.$emit('getScopedInfo', event.graphic)
+          } else {
+            this.stationLayer.remove(this.scopedObject)
+            this.scopedObject = event.graphic
+            this.$emit('getScopedInfo', event.graphic)
+          }
+        }
+      }.bind(this))
+
+      // const graphic = new Graphic({
+      //   geometry: {
+      //     type: 'polygon',
+      //     spatialReference: { 'latestWkid': 3857, 'wkid': 102100 },
+      //     rings: [
+      //       [11308485.233820729, 4404067.307810066],
+      //       [11324078.387590902, 4404067.307810066],
+      //       [11324078.387590902, 4392143.131397581],
+      //       [11308485.233820729, 4392143.131397581],
+      //       [11308485.233820729, 4404067.307810066]
+      //     ]
+      //   },
+      //   symbol: {
+      //     type: 'simple-fill', // autocasts as new SimpleFillSymbol()
+      //     color: [227, 139, 79, 0.8],
+      //     outline: {
+      //       // autocasts as new SimpleLineSymbol()
+      //       color: [255, 255, 255],
+      //       width: 1
+      //     }
+      //   }
+      // })
+      // this.stationLayer.add(graphic)
     }
   }
 }
