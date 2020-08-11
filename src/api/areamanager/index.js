@@ -31,3 +31,10 @@ export function getTollStationList(params) {
     params
   })
 }
+export function deleteODRegionObject(data) {
+  return request({
+    url: '/ODAnalysisController/deleteODRegionObject',
+    method: 'post',
+    data
+  })
+}

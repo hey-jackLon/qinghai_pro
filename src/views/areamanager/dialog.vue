@@ -7,7 +7,7 @@
       <el-form-item label="覆盖站点" :label-width="formLabelWidth">
         <el-button size="mini" @click="innerVisible = true">选择站点</el-button>
         <div v-if="form.station">
-          <el-tag v-for="item in form.station" :key="item.name" size="mini">{{ item.name }}</el-tag>
+          <el-tag v-for="item in form.station" :key="item.name" size="mini">{{ item.stationname }}</el-tag>
         </div>
       </el-form-item>
       <el-form-item label="影响范围" :label-width="formLabelWidth">
@@ -27,7 +27,7 @@
       :show-close="false"
       append-to-body
     >
-      <div style="margin-bottom:5px;"><el-tag v-for="(item,index) in stationInfo" :key="index" style="margin-right:2px;">{{ item.name }}</el-tag></div>
+      <div style="margin-bottom:5px;"><el-tag v-for="(item,index) in stationInfo" :key="index" style="margin-right:2px;">{{ item.stationname }}</el-tag></div>
       <div style="height:400px">
         <stationMap v-if="innerVisible" :station-data="stationData" @getStationInfo="getPointInfo" />
       </div>
@@ -177,7 +177,7 @@ export default {
     },
     getPointInfo(val) {
       for (let i = 0; i < this.stationInfo.length; i++) {
-        if (this.stationInfo[i].name === val.name) {
+        if (this.stationInfo[i].stationname === val.stationname) {
           this.stationInfo.splice(i, 1)
           return
         }

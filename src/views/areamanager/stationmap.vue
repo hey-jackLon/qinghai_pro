@@ -131,7 +131,6 @@ export default {
     initMarkers() {
       if (this.stationLayer) {
         const data = this.stationData
-        debugger
         if (data.length === 0) return
         this.stationLayer.removeAll()
         var graphics = []
@@ -145,8 +144,8 @@ export default {
           graphics.push(new this.Graphic({
             geometry: {
               type: 'point',
-              latitude: data[i].lat,
-              longitude: data[i].lon
+              latitude: data[i].stationlatitude,
+              longitude: data[i].stationlongitude
             },
             symbol: simpleMarkerSymbol,
             attributes: data[i]
@@ -166,24 +165,6 @@ export default {
               return result.graphic.layer === layer
             })[0].graphic
             if (graphic) {
-              // if (graphic.attributes.isChoose) {
-              //   graphic.symbol = {
-              //     type: 'picture-marker',
-              //     url: require('@/assets/map/img/camera2.png'),
-              //     width: '30px',
-              //     height: '30px'
-              //   }
-              //   graphic.attributes.isChoose = false
-              // } else {
-              //   graphic.symbol = {
-              //     type: 'picture-marker',
-              //     url: require('@/assets/map/img/camera3.png'),
-              //     width: '30px',
-              //     height: '30px'
-              //   }
-              //   graphic.attributes.isChoose = true
-              // }
-
               that.$emit('getStationInfo', graphic.attributes)
             }
           }
