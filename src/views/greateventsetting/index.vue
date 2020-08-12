@@ -9,20 +9,22 @@
         @current-change="tableClick"
       >
         <el-table-column
-          prop="events"
+          prop="eventName"
           label="事件名称"
         />
-        <el-table-column
-          prop="scope"
-          label="影响范围"
-        />
-        <el-table-column
-          prop="stations"
-          label="覆盖站点"
-        />
+        <el-table-column label="影响范围">
+          <template slot-scope="scope">
+            <el-tag type="info">{{ JSON.parse(scope.row.eventCircel).name || '暂无信息' }}</el-tag>
+          </template>
+        </el-table-column>
+        <el-table-column label="覆盖站点">
+          <template slot-scope="scope">
+            <el-tag v-for="item in scope.row.obStationList" :key="item.gczbs" style="margin-left:2px;" type="info">{{ item.gczmc }}</el-tag>
+          </template>
+        </el-table-column>
         <el-table-column label="操作">
           <template slot-scope="scope">
-            <el-button size="mini" @click="$emit('scopesetting',{index:scope.$index, row:scope.row})">
+            <el-button size="mini" @click="modifyScoped(scope.$index,scope.row)">
               范围
             </el-button>
             <el-button size="mini" type="danger" @click="stationsetting(scope.$index,scope.row)">
@@ -33,118 +35,135 @@
       </el-table>
     </div>
     <div class="container-right">
-      <arcgis-map ref="arcMap" :station-data="stationData" />
+      <arcgis-map ref="arcMap" :station-data="stationData" :circle-data="circleData" />
     </div>
-    <!-- <ehl-dialog
-      :opendialog="isOpen"
-      :dialog-title="title"
-      @closedialog="closeDialog"
-      @confirm="dialogConfirm"
-    /> -->
     <ehl-dialog
       v-if="isOpen"
       :dialog-title="title"
+      :station-data="stationDataDialog"
+      :index="stationSetIndex"
       @confirm="dialogConfirm"
       @cancle="dialogCancle"
     />
+    <el-dialog
+      v-if="Visible2"
+      width="40%"
+      title="站点选择"
+      :visible.sync="Visible2"
+      :close-on-click-modal="false"
+      :close-on-press-escape="false"
+      :show-close="false"
+    >
+      <div style="height:400px">
+        <scopedMap @getScopedInfo="getScopedInfo" />
+      </div>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="cancleSaveScoped()">取 消</el-button>
+        <el-button type="primary" @click="saveScoped()">确 定</el-button>
+      </div>
+    </el-dialog>
+    <!-- <scopedDialog /> -->
   </div>
 </template>
 
 <script>
-import ArcgisMap from '@/components/map/_index'
+import { getMajorEventList, getObStationListByGczbs, updateMajorEventObject } from '@/api/greateventsmanager/index.js'
+import ArcgisMap from './map'
 import ehlDialog from './dialog'
+import scopedMap from './scopedmap'
+// import scopedDialog from './dialogScoped.vue'
 export default {
-  components: { ArcgisMap, ehlDialog },
+  components: { ArcgisMap, ehlDialog, scopedMap },
   data() {
     return {
-      tableData: [
-        {
-          events: '2019年环青海湖公路国际公路自行车赛',
-          scope: '青海湖周边公路',
-          stations: '青海湖-南收费站',
-          stationData: [
-            {
-              'lat': '36.963468',
-              'lon': '100.855518',
-              'name': '海北藏族自治州'
-            },
-            {
-              'lat': '37.318157',
-              'lon': '100.141407',
-              'name': '刚察县'
-            }
-          ]
-        },
-        {
-          events: '2018年环青海湖公路国际公路自行车赛',
-          scope: '青海湖周边公路',
-          stations: '青海湖-南收费站',
-          stationData: [
-            {
-              'lat': '36.271261',
-              'lon': '100.616565',
-              'name': '海南藏族自治州'
-            },
-            {
-              'lat': '37.296311',
-              'lon': '99.037281',
-              'name': '天峻县'
-            },
-            {
-              'lat': '36.921759',
-              'lon': '98.479724',
-              'name': '乌兰县'
-            }
-          ]
-        },
-        {
-          events: '2017年环青海湖公路国际公路自行车赛',
-          scope: '青海湖周边公路',
-          stations: '青海湖-南收费站',
-          stationData: [
-            {
-              'lat': '36.677639',
-              'lon': '101.248279',
-              'name': '湟源县'
-            },
-            {
-              'lat': '36.921759',
-              'lon': '101.687732',
-              'name': '大通回族自治县'
-            }]
-        }
-      ],
+      tableData: [],
       stationData: [],
+      circleData: '',
+      stationDataDialog: [],
       isOpen: false,
       type: '',
-      title: ''
+      title: '',
+      stationSetIndex: null,
+      Visible2: false,
+      scopedInfo: null
     }
+  },
+  created() {
+    this.getMajorEventList()
+    getObStationListByGczbs().then(res => {
+      this.stationDataDialog = res
+    })
   },
   methods: {
     tableClick(val) {
-      this.$refs.arcMap
-      this.stationData = val.stationData
+      this.stationData = val.obStationList
+      this.circleData = val.eventCircel
     },
     stationsetting(index, row) {
       this.isOpen = true
-      this.title = row.events
+      this.title = row.eventName
+      this.stationSetIndex = index
     },
     closeDialog(e) {
       this.isOpen = e
     },
     dialogConfirm(e) {
+      const data = this.tableData[e.index]
+      data.obStationList = e.stations
+      this.updateMajorEventObject(data)
       this.isOpen = false
-      // if (e.index === 0 || e.index) {
-      //   const index = e.index
-      //   delete e.index
-      //   this.tableData.splice(index, 1, e)
-      // } else {
-      //   this.tableData.unshift(e)
-      // }
+    },
+    modifyScoped(index, row) {
+      this.stationSetIndex = index
+      this.Visible2 = true
     },
     dialogCancle(e) {
-      debugger
       this.isOpen = false
+    },
+    getScopedInfo(val) {
+      this.scopedInfo = val
+    },
+    cancleSaveScoped() {
+      this.Visible2 = false
+      this.stationSetIndex = null
+      this.scopedInfo = null
+    },
+    saveScoped() {
+      const that = this
+      if (this.scopedInfo) {
+        this.$prompt('请输入区域名称', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消'
+        }).then(({ value }) => {
+          const data = that.tableData[that.stationSetIndex]
+          data.eventCircel = JSON.stringify({
+            name: value,
+            type: that.scopedInfo.geometry.type,
+            path: that.scopedInfo.geometry.rings,
+            symbol: that.scopedInfo.symbol
+          })
+          that.updateMajorEventObject(data)
+          that.Visible2 = false
+        })
+      } else {
+        return
+      }
+    },
+    getMajorEventList() {
+      getMajorEventList().then(res => {
+        this.tableData = res
+      })
+    },
+    updateMajorEventObject(data) {
+      updateMajorEventObject(data).then(res => {
+        if (res) {
+          // this.getMajorEventList()
+          this.$message({
+            type: 'success',
+            message: '修改成功'
+          })
+        }
+      })
     }
   }
 }

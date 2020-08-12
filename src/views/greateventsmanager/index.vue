@@ -5,6 +5,7 @@
       :type="type"
       :opendialog="isOpen"
       :form="form"
+      :station-data="stationData"
       @closedialog="closeDialog"
       @confirm="dialogConfirm"
     />
@@ -14,7 +15,7 @@
 <script>
 import ehlTable from './table'
 import ehlDialog from './dialog'
-import { getMajorEventList } from '@/api/greateventsmanager/index'
+import { getMajorEventList, getObStationListByGczbs, updateMajorEventObject, deleteMajorEventObject } from '@/api/greateventsmanager/index'
 export default {
   components: { ehlTable, ehlDialog },
   data() {
@@ -22,14 +23,18 @@ export default {
       tableData: [],
       isOpen: false,
       form: {},
-      type: ''
+      type: '',
+      stationData: []
     }
   },
-  mounted() {
-    getMajorEventList().then(res => {
-      // debugger
-      this.tableData = res
+  created() {
+    this.getMajorEventList()
+    getObStationListByGczbs().then(res => {
+      this.stationData = res
     })
+  },
+  mounted() {
+
   },
   methods: {
     handleAdd(e) {
@@ -40,39 +45,69 @@ export default {
     handUpdate(e) {
       this.isOpen = true
       this.type = 'modify'
-      this.form = Object.assign({ index: e.index }, e.row)
+      this.form = {
+        eventId: e.row.eventId,
+        scopedInfo: e.row.eventCircel,
+        event_name: e.row.eventName,
+        time: [e.row.eventStime, e.row.eventEtime],
+        station: e.row.obStationList
+      }
     },
     handleDelete(e) {
       this.$confirm('将删除此条记录, 是否继续?', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'
+      }).then(() => {
+        deleteMajorEventObject({ eventId: e.row.eventId }).then(res => {
+          if (res) {
+            this.$message({
+              type: 'success',
+              message: '删除成功!'
+            })
+            this.getMajorEventList()
+          } else {
+            this.$message({
+              type: 'waring',
+              message: '删除失败!'
+            })
+          }
+        })
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: '已取消删除'
+        })
       })
-        .then(() => {
-          this.tableData.splice(e.index, 1)
-          this.$message({
-            type: 'success',
-            message: '删除成功!'
-          })
-        })
-        .catch(() => {
-          this.$message({
-            type: 'info',
-            message: '已取消删除'
-          })
-        })
     },
     closeDialog(e) {
       this.isOpen = e
     },
     dialogConfirm(e) {
-      if (e.index === 0 || e.index) {
-        const index = e.index
-        delete e.index
-        this.tableData.splice(index, 1, e)
-      } else {
-        this.tableData.unshift(e)
+      const data = {
+        'eventCircel': e.scopedInfo,
+        'eventEtime': e.time[1],
+        'eventId': e.eventId ? e.eventId : null,
+        'eventName': e.event_name,
+        'eventScope': null,
+        'eventStime': e.time[0],
+        'obStationList': e.station
       }
+      updateMajorEventObject(data).then(res => {
+        if (res) {
+          this.$message({
+            type: 'success',
+            message: '成功!'
+          })
+          this.getMajorEventList()
+        }
+      })
+    },
+    getMajorEventList() {
+      getMajorEventList().then(res => {
+        // debugger
+        this.tableData = res
+      })
     }
   }
 }

@@ -1,5 +1,5 @@
 import request from '@/utils/request'
-
+const qs = require('qs')
 export function getODRegionList(params) {
   return request({
     url: '/ODAnalysisController/getODRegionList',
@@ -31,10 +31,10 @@ export function getTollStationList(params) {
     params
   })
 }
-export function deleteODRegionObject(data) {
+export function deleteODRegionObject(params) {
   return request({
     url: '/ODAnalysisController/deleteODRegionObject',
     method: 'post',
-    data
+    data: qs.stringify(params)
   })
 }
