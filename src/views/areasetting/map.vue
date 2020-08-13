@@ -14,6 +14,12 @@ export default {
       default: function() {
         return []
       }
+    },
+    circleData: {
+      type: String,
+      default: function() {
+        return ''
+      }
     }
   },
   data() {
@@ -28,6 +34,7 @@ export default {
     stationData: {
       handler(n, o) {
         this.initMarkers()
+        this.initCircle()
       },
       deep: true
     }
@@ -124,9 +131,8 @@ export default {
       this.stationLayer = new GraphicsLayer()
       this.Graphic = Graphic
       this.map.add(this.stationLayer)
-      this.initMarkers()
-
-      this.graphicLayerClick(this, this.view, this.stationLayer)
+      // this.initMarkers()
+      // this.initCircle()
     },
     initMarkers() {
       if (this.stationLayer) {
@@ -151,25 +157,31 @@ export default {
             attributes: data[i]
           }))
         }
-
         this.stationLayer.addMany(graphics)
       } else {
         return
       }
     },
-    graphicLayerClick(that, view, layer) {
-      view.on(['click'], function(event) {
-        view.hitTest(event).then(function(response) {
-          if (response.results.length) {
-            var graphic = response.results.filter(function(result) {
-              return result.graphic.layer === layer
-            })[0].graphic
-            if (graphic) {
-              that.$emit('getStationInfo', graphic.attributes)
+    initCircle() {
+      if (this.circleData) {
+        const circleData = JSON.parse(this.circleData)
+        const graphic = new this.Graphic({
+          geometry: {
+            type: circleData.type,
+            spatialReference: { 'latestWkid': 3857, 'wkid': 102100 },
+            rings: circleData.path
+          },
+          symbol: {
+            type: 'simple-fill',
+            color: [227, 139, 79, 0.8],
+            outline: {
+              color: [255, 255, 255],
+              width: 1
             }
           }
         })
-      })
+        this.stationLayer.add(graphic)
+      }
     }
   }
 }

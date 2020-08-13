@@ -5,17 +5,11 @@
     </div>
     <el-table :data="tabledata" border style="width: 100%">
       <el-table-column type="index" width="50" label="#" />
-      <el-table-column prop="eventName" label="重大事件" />
-      <el-table-column label="时间范围">
-        <template slot-scope="scope">
-          <el-tag type="info">{{ scope.row. eventStime }}</el-tag>
-          -
-          <el-tag type="info">{{ scope.row.eventEtime }}</el-tag>
-        </template>
-      </el-table-column>
+      <el-table-column prop="channelName" label="旅游通道" />
       <el-table-column label="影响范围">
         <template slot-scope="scope">
-          <el-tag type="info">{{ JSON.parse(scope.row.eventCircel).name || '暂无信息' }}</el-tag>
+          <el-tag v-if="scope.row.channelCircle?true:false" type="info">{{ JSON.parse(scope.row.channelCircle).name }}</el-tag>
+          <el-tag v-else type="info">暂无信息</el-tag>
         </template>
       </el-table-column>
       <el-table-column label="覆盖站点">

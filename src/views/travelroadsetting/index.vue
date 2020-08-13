@@ -9,12 +9,13 @@
         @current-change="tableClick"
       >
         <el-table-column
-          prop="eventName"
-          label="事件名称"
+          prop="channelName"
+          label="通道名称"
         />
         <el-table-column label="影响范围">
           <template slot-scope="scope">
-            <el-tag type="info">{{ JSON.parse(scope.row.eventCircel).name || '暂无信息' }}</el-tag>
+            <el-tag v-if="scope.row.channelCircle?true:false" type="info">{{ JSON.parse(scope.row.channelCircle).name }}</el-tag>
+            <el-tag v-else type="info">暂无信息</el-tag>
           </template>
         </el-table-column>
         <el-table-column label="覆盖站点">
@@ -62,16 +63,14 @@
         <el-button type="primary" @click="saveScoped()">确 定</el-button>
       </div>
     </el-dialog>
-    <!-- <scopedDialog /> -->
   </div>
 </template>
 
 <script>
-import { getMajorEventList, getObStationListByGczbs, updateMajorEventObject } from '@/api/greateventsmanager/index.js'
+import { getTourismChannelList, getObStationListByGczbs, updateTourismChannelObject } from '@/api/travelroadmanager/index.js'
 import ArcgisMap from './map'
 import ehlDialog from './dialog'
 import scopedMap from './scopedmap'
-// import scopedDialog from './dialogScoped.vue'
 export default {
   components: { ArcgisMap, ehlDialog, scopedMap },
   data() {
@@ -89,7 +88,7 @@ export default {
     }
   },
   created() {
-    this.getMajorEventList()
+    this.getTourismChannelList()
     getObStationListByGczbs().then(res => {
       this.stationDataDialog = res
     })
@@ -97,7 +96,7 @@ export default {
   methods: {
     tableClick(val) {
       this.stationData = val.obStationList
-      this.circleData = val.eventCircel
+      this.circleData = val.channelCircle
     },
     stationsetting(index, row) {
       this.isOpen = true
@@ -110,7 +109,7 @@ export default {
     dialogConfirm(e) {
       const data = this.tableData[e.index]
       data.obStationList = e.stations
-      this.updateMajorEventObject(data)
+      this.updateTourismChannelObject(data)
       this.isOpen = false
     },
     modifyScoped(index, row) {
@@ -136,28 +135,28 @@ export default {
           cancelButtonText: '取消'
         }).then(({ value }) => {
           const data = that.tableData[that.stationSetIndex]
-          data.eventCircel = JSON.stringify({
+          data.channelCircle = JSON.stringify({
             name: value,
             type: that.scopedInfo.geometry.type,
             path: that.scopedInfo.geometry.rings,
             symbol: that.scopedInfo.symbol
           })
-          that.updateMajorEventObject(data)
+          that.updateTourismChannelObject(data)
           that.Visible2 = false
         })
       } else {
         return
       }
     },
-    getMajorEventList() {
-      getMajorEventList().then(res => {
+    getTourismChannelList() {
+      getTourismChannelList().then(res => {
         this.tableData = res
       })
     },
-    updateMajorEventObject(data) {
-      updateMajorEventObject(data).then(res => {
+    updateTourismChannelObject(data) {
+      updateTourismChannelObject(data).then(res => {
         if (res) {
-          // this.getMajorEventList()
+          // this.getTourismChannelList()
           this.$message({
             type: 'success',
             message: '修改成功'

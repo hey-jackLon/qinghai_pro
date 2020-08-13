@@ -1,9 +1,10 @@
 import request from '@/utils/request'
+const qs = require('qs')
 export function deleteTourismChannelObject(data) {
   return request({
     url: '/TourismChannelController/deleteTourismChannelObject',
     method: 'post',
-    data
+    data: qs.stringify(data)
   })
 }
 export function getObStationListByGczbs(data) {

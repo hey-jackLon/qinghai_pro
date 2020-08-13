@@ -15,7 +15,7 @@
 <script>
 import ehlTable from './table'
 import ehlDialog from './dialog'
-import { getMajorEventList, getObStationListByGczbs, updateMajorEventObject, deleteMajorEventObject } from '@/api/greateventsmanager/index'
+import { getTourismChannelList, getObStationListByGczbs, updateTourismChannelObject, deleteTourismChannelObject } from '@/api/travelroadmanager/index'
 export default {
   components: { ehlTable, ehlDialog },
   data() {
@@ -28,7 +28,7 @@ export default {
     }
   },
   created() {
-    this.getMajorEventList()
+    this.getTourismChannelList()
     getObStationListByGczbs().then(res => {
       this.stationData = res
     })
@@ -46,10 +46,10 @@ export default {
       this.isOpen = true
       this.type = 'modify'
       this.form = {
-        eventId: e.row.eventId,
-        scopedInfo: e.row.eventCircel,
-        event_name: e.row.eventName,
-        time: [e.row.eventStime, e.row.eventEtime],
+        eventId: e.row.channelId,
+        scopedInfo: e.row.channelCircle,
+        event_name: e.row.channelName,
+        // time: [e.row.eventStime, e.row.eventEtime],
         station: e.row.obStationList
       }
     },
@@ -59,13 +59,13 @@ export default {
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
-        deleteMajorEventObject({ eventId: e.row.eventId }).then(res => {
+        deleteTourismChannelObject({ channelId: e.row.channelId }).then(res => {
           if (res) {
             this.$message({
               type: 'success',
               message: '删除成功!'
             })
-            this.getMajorEventList()
+            this.getTourismChannelList()
           } else {
             this.$message({
               type: 'waring',
@@ -85,27 +85,23 @@ export default {
     },
     dialogConfirm(e) {
       const data = {
-        'eventCircel': e.scopedInfo,
-        'eventEtime': e.time[1],
-        'eventId': e.eventId ? e.eventId : null,
-        'eventName': e.event_name,
-        'eventScope': null,
-        'eventStime': e.time[0],
+        'channelCircle': e.scopedInfo,
+        'channelId': e.eventId ? e.eventId : null,
+        'channelName': e.event_name,
         'obStationList': e.station
       }
-      updateMajorEventObject(data).then(res => {
+      updateTourismChannelObject(data).then(res => {
         if (res) {
           this.$message({
             type: 'success',
             message: '成功!'
           })
-          this.getMajorEventList()
+          this.getTourismChannelList()
         }
       })
     },
-    getMajorEventList() {
-      getMajorEventList().then(res => {
-        // debugger
+    getTourismChannelList() {
+      getTourismChannelList().then(res => {
         this.tableData = res
       })
     }
