@@ -9,18 +9,18 @@
         @current-change="tableClick"
       >
         <el-table-column
-          prop="channelName"
-          label="通道名称"
+          prop="regionName"
+          label="区域名称"
         />
         <el-table-column label="影响范围">
           <template slot-scope="scope">
-            <el-tag v-if="scope.row.channelCircle?true:false" type="info">{{ JSON.parse(scope.row.channelCircle).name }}</el-tag>
+            <el-tag v-if="scope.row.regionCircle?true:false" type="info">{{ JSON.parse(scope.row.regionCircle).name }}</el-tag>
             <el-tag v-else type="info">暂无信息</el-tag>
           </template>
         </el-table-column>
         <el-table-column label="覆盖站点">
           <template slot-scope="scope">
-            <el-tag v-for="item in scope.row.obStationList" :key="item.gczbs" style="margin-left:2px;" type="info">{{ item.gczmc }}</el-tag>
+            <el-tag v-for="item in scope.row.tollStationList" :key="item.gczbs" style="margin-left:2px;" type="info">{{ item.stationname }}</el-tag>
           </template>
         </el-table-column>
         <el-table-column label="操作">
@@ -67,7 +67,7 @@
 </template>
 
 <script>
-import { getTourismChannelList, getObStationListByGczbs, updateTourismChannelObject } from '@/api/travelroadmanager/index.js'
+import { getODRegionList, getTollStationList, updateODRegionObject } from '@/api/areamanager/index'
 import ArcgisMap from './map'
 import ehlDialog from './dialog'
 import scopedMap from './scopedmap'
@@ -88,19 +88,19 @@ export default {
     }
   },
   created() {
-    this.getTourismChannelList()
-    getObStationListByGczbs().then(res => {
+    this.getODRegionList()
+    getTollStationList().then(res => {
       this.stationDataDialog = res
     })
   },
   methods: {
     tableClick(val) {
-      this.stationData = val.obStationList
-      this.circleData = val.channelCircle
+      this.stationData = val.tollStationList
+      this.circleData = val.regionCircle
     },
     stationsetting(index, row) {
       this.isOpen = true
-      this.title = row.eventName
+      this.title = row.regionName
       this.stationSetIndex = index
     },
     closeDialog(e) {
@@ -108,8 +108,8 @@ export default {
     },
     dialogConfirm(e) {
       const data = this.tableData[e.index]
-      data.obStationList = e.stations
-      this.updateTourismChannelObject(data)
+      data.tollStationList = e.stations
+      this.updateODRegionObject(data)
       this.isOpen = false
     },
     modifyScoped(index, row) {
@@ -135,28 +135,28 @@ export default {
           cancelButtonText: '取消'
         }).then(({ value }) => {
           const data = that.tableData[that.stationSetIndex]
-          data.channelCircle = JSON.stringify({
+          data.regionCircle = JSON.stringify({
             name: value,
             type: that.scopedInfo.geometry.type,
             path: that.scopedInfo.geometry.rings,
             symbol: that.scopedInfo.symbol
           })
-          that.updateTourismChannelObject(data)
+          that.updateODRegionObject(data)
           that.Visible2 = false
         })
       } else {
         return
       }
     },
-    getTourismChannelList() {
-      getTourismChannelList().then(res => {
+    getODRegionList() {
+      getODRegionList().then(res => {
         this.tableData = res
       })
     },
-    updateTourismChannelObject(data) {
-      updateTourismChannelObject(data).then(res => {
+    updateODRegionObject(data) {
+      updateODRegionObject(data).then(res => {
         if (res) {
-          // this.getTourismChannelList()
+          // this.getODRegionList()
           this.$message({
             type: 'success',
             message: '修改成功'

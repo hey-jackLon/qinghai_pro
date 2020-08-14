@@ -17,6 +17,14 @@ export function insertODRegionObject(params) {
   })
 }
 
+export function updateODRegionObject(params) {
+  return request({
+    url: '/ODAnalysisController/updateODRegionObject',
+    method: 'post',
+    data: params
+  })
+}
+
 export function getTollStationList(params) {
   return request({
     url: '/ODAnalysisController/getTollStationList',

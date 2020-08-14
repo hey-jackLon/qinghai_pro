@@ -15,7 +15,7 @@
 <script>
 import ehlTable from './table'
 import ehlDialog from './dialog'
-import { getTourismChannelList, getObStationListByGczbs, updateTourismChannelObject, deleteTourismChannelObject } from '@/api/travelroadmanager/index'
+import { getODRegionList, getTollStationList, insertODRegionObject, deleteODRegionObject, updateODRegionObject } from '@/api/areamanager/index'
 export default {
   components: { ehlTable, ehlDialog },
   data() {
@@ -28,8 +28,12 @@ export default {
     }
   },
   created() {
-    this.getTourismChannelList()
-    getObStationListByGczbs().then(res => {
+    this.getODRegionList()
+    getTollStationList().then(res => {
+      for (let i = 0; i < res.length; i++) {
+        res[i].stationlatitude = 37 + Number(Math.random().toFixed(6))
+        res[i].stationlongitude = 101 + Number(Math.random().toFixed(6))
+      }
       this.stationData = res
     })
   },
@@ -43,14 +47,15 @@ export default {
       this.form = Object.assign({})
     },
     handUpdate(e) {
+      // debugger
       this.isOpen = true
       this.type = 'modify'
       this.form = {
-        eventId: e.row.channelId,
-        scopedInfo: e.row.channelCircle,
-        event_name: e.row.channelName,
+        regionId: e.row.regionId,
+        scopedInfo: e.row.regionCircle,
+        event_name: e.row.regionName,
         // time: [e.row.eventStime, e.row.eventEtime],
-        station: e.row.obStationList
+        station: e.row.tollStationList
       }
     },
     handleDelete(e) {
@@ -59,13 +64,13 @@ export default {
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
-        deleteTourismChannelObject({ channelId: e.row.channelId }).then(res => {
+        deleteODRegionObject({ regionid: e.row.regionId }).then(res => {
           if (res) {
             this.$message({
               type: 'success',
               message: '删除成功!'
             })
-            this.getTourismChannelList()
+            this.getODRegionList()
           } else {
             this.$message({
               type: 'waring',
@@ -84,24 +89,38 @@ export default {
       this.isOpen = e
     },
     dialogConfirm(e) {
-      const data = {
-        'channelCircle': e.scopedInfo,
-        'channelId': e.eventId ? e.eventId : null,
-        'channelName': e.event_name,
-        'obStationList': e.station
-      }
-      updateTourismChannelObject(data).then(res => {
-        if (res) {
-          this.$message({
-            type: 'success',
-            message: '成功!'
-          })
-          this.getTourismChannelList()
+      if (e.regionId) {
+        const data = {
+          'regionCircle': e.scopedInfo,
+          'regionId': e.regionId,
+          'regionName': e.event_name,
+          'tollStationList': e.station
         }
-      })
+        updateODRegionObject(data).then(res => {
+          if (res) {
+            this.getODRegionList()
+          }
+        })
+      } else {
+        const data = {
+          'regionCircle': e.scopedInfo,
+          'regionId': null,
+          'regionName': e.event_name,
+          'tollStationList': e.station
+        }
+        insertODRegionObject(data).then(res => {
+          if (res) {
+            this.$message({
+              type: 'success',
+              message: '成功!'
+            })
+            this.getODRegionList()
+          }
+        })
+      }
     },
-    getTourismChannelList() {
-      getTourismChannelList().then(res => {
+    getODRegionList() {
+      getODRegionList().then(res => {
         this.tableData = res
       })
     }

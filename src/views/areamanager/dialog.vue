@@ -1,13 +1,13 @@
 <template>
-  <el-dialog :title="type==='add'?'新增重大事件':'修改重大事件'" width="22%" :visible.sync="dialogFormVisible">
+  <el-dialog :title="type==='add'?'新增典型区域':'修改典型区域'" width="22%" :visible.sync="dialogFormVisible">
     <el-form :model="form">
-      <el-form-item label="事件名称" :label-width="formLabelWidth">
+      <el-form-item label="区域名称" :label-width="formLabelWidth">
         <el-input v-model="form.event_name" autocomplete="off" style="width:300px;" />
       </el-form-item>
       <el-form-item label="覆盖站点" :label-width="formLabelWidth">
         <el-button size="mini" @click="innerVisible = true">选择站点</el-button>
         <div v-if="form.station">
-          <el-tag v-for="item in form.station" :key="item.gczbs" size="mini">{{ item.gczmc }}</el-tag>
+          <el-tag v-for="item in form.station" :key="item.gczbs" size="mini">{{ item.stationname }}</el-tag>
         </div>
       </el-form-item>
       <el-form-item label="影响范围" :label-width="formLabelWidth">
@@ -27,7 +27,7 @@
       :show-close="false"
       append-to-body
     >
-      <div style="margin-bottom:5px;"><el-tag v-for="(item,index) in stationInfo" :key="index" style="margin-right:2px;">{{ item.gczmc }}</el-tag></div>
+      <div style="margin-bottom:5px;"><el-tag v-for="(item,index) in stationInfo" :key="index" style="margin-right:2px;">{{ item.stationname }}</el-tag></div>
       <div style="height:400px">
         <stationMap v-if="innerVisible" :station-data="stationData" @getStationInfo="getPointInfo" />
       </div>
@@ -146,7 +146,7 @@ export default {
     },
     getPointInfo(val) {
       for (let i = 0; i < this.stationInfo.length; i++) {
-        if (this.stationInfo[i].gczbs === val.gczbs) {
+        if (this.stationInfo[i].stationname === val.stationname) {
           this.stationInfo.splice(i, 1)
           return
         }

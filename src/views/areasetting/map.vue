@@ -150,8 +150,8 @@ export default {
           graphics.push(new this.Graphic({
             geometry: {
               type: 'point',
-              latitude: data[i].latitude,
-              longitude: data[i].longitude
+              latitude: data[i].stationlatitude,
+              longitude: data[i].stationlongitude
             },
             symbol: simpleMarkerSymbol,
             attributes: data[i]
