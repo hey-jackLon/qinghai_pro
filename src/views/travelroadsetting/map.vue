@@ -37,6 +37,13 @@ export default {
         this.initCircle()
       },
       deep: true
+    },
+    circleData: {
+      handler(n, o) {
+        this.initMarkers()
+        this.initCircle()
+      },
+      deep: true
     }
   },
   mounted() {

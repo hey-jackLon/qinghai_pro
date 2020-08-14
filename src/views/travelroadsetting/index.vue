@@ -110,6 +110,7 @@ export default {
       const data = this.tableData[e.index]
       data.obStationList = e.stations
       this.updateTourismChannelObject(data)
+      this.stationData = data.obStationList
       this.isOpen = false
     },
     modifyScoped(index, row) {
@@ -142,6 +143,7 @@ export default {
             symbol: that.scopedInfo.symbol
           })
           that.updateTourismChannelObject(data)
+          that.circleData = data.channelCircle
           that.Visible2 = false
         })
       } else {

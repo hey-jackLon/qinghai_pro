@@ -111,6 +111,7 @@ export default {
       const data = this.tableData[e.index]
       data.obStationList = e.stations
       this.updateMajorEventObject(data)
+      this.stationData = data.obStationList
       this.isOpen = false
     },
     modifyScoped(index, row) {
@@ -142,6 +143,7 @@ export default {
             path: that.scopedInfo.geometry.rings,
             symbol: that.scopedInfo.symbol
           })
+          this.circleData = data.eventCircel
           that.updateMajorEventObject(data)
           that.Visible2 = false
         })

@@ -110,6 +110,7 @@ export default {
       const data = this.tableData[e.index]
       data.tollStationList = e.stations
       this.updateODRegionObject(data)
+      this.stationData = data.tollStationList
       this.isOpen = false
     },
     modifyScoped(index, row) {
@@ -141,6 +142,7 @@ export default {
             path: that.scopedInfo.geometry.rings,
             symbol: that.scopedInfo.symbol
           })
+          this.circleData = data.regionCircle
           that.updateODRegionObject(data)
           that.Visible2 = false
         })
