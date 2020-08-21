@@ -11,13 +11,13 @@
 import { getODRegionList, doODRegionRadiation, getODRegionDMList } from '@/api/areamanager/index'
 import conForm from './form'
 import Map from '@/components/MigrationMap/index2'
-import series from './serise.js'
+import makeData from './serise.js'
 import Axios from 'axios'
 export default {
   components: { Map, conForm },
   data() {
     return {
-      seriesData: series,
+      seriesData: null,
       events: null,
       geoCoordMap: []
     }
@@ -26,17 +26,16 @@ export default {
     const that = this
     Axios.all([getODRegionList(), getODRegionDMList()])
       .then(Axios.spread(function(res1, res2) {
-        const arr = [...res1, ...res2]
-        debugger
         that.events = res1
-        // 两个请求现在都执行完成
+        const arr = [...res1, ...res2]
+        for (let i = 0; i < arr.length; i++) {
+          if (!arr[i].regionId) {
+            that.geoCoordMap[arr[i].name] = [arr[i].longitude, arr[i].latitude]
+          } else {
+            that.geoCoordMap[arr[i].regionName] = [arr[i].longitude, arr[i].latitude]
+          }
+        }
       }))
-    // getODRegionList().then(res1 => {
-    //   this.events = res1
-    //   getODRegionDMList().then(res2 => {
-    //     debugger
-    //   })
-    // })
   },
   methods: {
     query(e) {
@@ -57,6 +56,7 @@ export default {
       // debugger
       doODRegionRadiation(params, data).then(res => {
         debugger
+        this.seriesData = makeData([data.regionName, res], this.geoCoordMap)
       })
     }
   }

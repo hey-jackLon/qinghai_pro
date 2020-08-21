@@ -17,6 +17,15 @@ export default {
       }
     }
   },
+  watch: {
+    series: {
+      handler(n, o) {
+        this.view.container = null
+        this.initMap()
+      },
+      deep: true
+    }
+  },
   mounted() {
     this.initMap()
   },

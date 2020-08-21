@@ -126,7 +126,6 @@ export default {
     },
     getODRegionList() {
       getODRegionList().then(res => {
-        debugger
         this.tableData = res
       })
     }
