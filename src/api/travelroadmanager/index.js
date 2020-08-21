@@ -21,6 +21,7 @@ export function updateTourismChannelObject(data) {
     data
   })
 }
+
 export function getTourismChannelList(data) {
   return request({
     url: '/TourismChannelController/getTourismChannelList',
@@ -28,3 +29,20 @@ export function getTourismChannelList(data) {
     data
   })
 }
+export function getChannelRegionAnalysis(params, data) {
+  return request({
+    url: '/TourismChannelController/getChannelRegionAnalysis',
+    method: 'post',
+    params,
+    data: data
+  })
+}
+export function getChannelTimeAnalysis(params, data) {
+  return request({
+    url: '/TourismChannelController/getChannelTimeAnalysis',
+    method: 'post',
+    params,
+    data: data
+  })
+}
+

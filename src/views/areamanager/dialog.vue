@@ -176,6 +176,8 @@ export default {
           cancelButtonText: '取消'
         }).then(({ value }) => {
           this.innerVisible2 = false
+          this.form.longitude = this.scopedInfo.geometry.extent.center.longitude
+          this.form.latitude = this.scopedInfo.geometry.extent.center.latitude
           this.form.scopedInfo = JSON.stringify({
             name: value,
             type: this.scopedInfo.geometry.type,

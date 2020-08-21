@@ -40,3 +40,29 @@ export function deleteODRegionObject(params) {
     data: qs.stringify(params)
   })
 }
+
+export function doODRegionIndexAnalysis(params, data) {
+  return request({
+    url: '/ODAnalysisController/doODRegionIndexAnalysis',
+    method: 'post',
+    params,
+    data: data
+  })
+}
+
+export function doODRegionRadiation(params, data) {
+  return request({
+    url: '/ODAnalysisController/doODRegionRadiation',
+    method: 'post',
+    params,
+    data: data
+  })
+}
+
+export function getODRegionDMList(params) {
+  return request({
+    url: '/ODAnalysisController/getODRegionDMList',
+    method: 'post',
+    params
+  })
+}

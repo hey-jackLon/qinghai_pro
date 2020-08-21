@@ -25,21 +25,65 @@ export default {
       type: String,
       default: '200px'
     },
-    tableData: {
-      type: Array,
+    chartOption: {
+      type: Object,
       default: function() {
-        return []
+        return {}
       }
     }
   },
   data() {
     return {
-      chart: null
+      chart: null,
+      option: {
+        title: {
+          text: '某站点用户访问来源',
+          left: 'center'
+        },
+        tooltip: {
+          trigger: 'item',
+          formatter: '{a} <br/>{b} : {c} ({d}%)'
+        },
+        legend: {
+          bottom: 'bottom',
+          left: 'center',
+          data: ['直接访问', '邮件营销', '联盟广告', '视频广告', '搜索引擎']
+        },
+        grid: {
+          left: '3%',
+          right: '4%',
+          bottom: '10%',
+          containLabel: true
+        },
+        series: [
+          {
+            name: '访问来源',
+            type: 'pie',
+            radius: '55%',
+            center: ['50%', '60%'],
+            data: [
+              { value: 335, name: '直接访问' },
+              { value: 310, name: '邮件营销' },
+              { value: 234, name: '联盟广告' },
+              { value: 135, name: '视频广告' },
+              { value: 1548, name: '搜索引擎' }
+            ],
+            emphasis: {
+              itemStyle: {
+                shadowBlur: 10,
+                shadowOffsetX: 0,
+                shadowColor: 'rgba(0, 0, 0, 0.5)'
+              }
+            }
+          }
+        ]
+      }
     }
   },
   watch: {
-    tableData: {
+    chartOption: {
       handler(n, o) {
+        // debugger
         this.initChart()
       },
       deep: true
@@ -57,49 +101,10 @@ export default {
   },
   methods: {
     initChart() {
-      const legendData = ['客车', '货车', '作业车']
-      const seriesData = [
-        { value: 0, name: '客车' },
-        { value: 0, name: '货车' },
-        { value: 0, name: '作业车' }
-      ]
-      for (let i = 0; i < this.tableData.length; i++) {
-        seriesData[0].value += this.tableData[i].kc
-        seriesData[1].value += this.tableData[i].hc
-        seriesData[2].value += this.tableData[i].zyc
-      }
       this.chart = echarts.init(document.getElementById(this.id))
-      this.chart.setOption({
-        title: {
-          text: '交通组成分析',
-          left: 'center'
-        },
-        tooltip: {
-          trigger: 'item',
-          formatter: '{a} <br/>{b} : {c} ({d}%)'
-        },
-        legend: {
-          bottom: 'bottom',
-          left: 'center',
-          data: legendData
-        },
-        series: [
-          {
-            name: '访问来源',
-            type: 'pie',
-            radius: '55%',
-            center: ['50%', '60%'],
-            data: seriesData,
-            emphasis: {
-              itemStyle: {
-                shadowBlur: 10,
-                shadowOffsetX: 0,
-                shadowColor: 'rgba(0, 0, 0, 0.5)'
-              }
-            }
-          }
-        ]
-      })
+      const obj = Object.assign(this.option, this.chartOption)
+      // debugger
+      this.chart.setOption(obj)
     }
   }
 }

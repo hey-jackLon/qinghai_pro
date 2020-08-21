@@ -141,7 +141,11 @@ export default {
             type: that.scopedInfo.geometry.type,
             path: that.scopedInfo.geometry.rings,
             symbol: that.scopedInfo.symbol
+            // centerPoint: [event.graphic.geometry.extent.center.longitude, event.graphic.geometry.extent.center.latitude]
           })
+          data.longitude = that.scopedInfo.geometry.extent.center.longitude
+          data.latitude = that.scopedInfo.geometry.extent.center.latitude
+          // debugger
           this.circleData = data.regionCircle
           that.updateODRegionObject(data)
           that.Visible2 = false

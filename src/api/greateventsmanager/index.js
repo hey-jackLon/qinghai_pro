@@ -21,10 +21,20 @@ export function updateMajorEventObject(params) {
     data: params
   })
 }
+
 export function deleteMajorEventObject(params) {
   return request({
     url: '/MajorEventController/deleteMajorEventObject',
     method: 'post',
     data: qs.stringify(params)
+  })
+}
+
+export function getEventAnalysis(params, data) {
+  return request({
+    url: '/MajorEventController/getEventAnalysis',
+    method: 'post',
+    params,
+    data: data
   })
 }

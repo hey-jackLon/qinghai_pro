@@ -89,12 +89,15 @@ export default {
       this.isOpen = e
     },
     dialogConfirm(e) {
+      // debugger
       if (e.regionId) {
         const data = {
           'regionCircle': e.scopedInfo,
           'regionId': e.regionId,
           'regionName': e.event_name,
-          'tollStationList': e.station
+          'tollStationList': e.station,
+          'longitude': e.longitude,
+          'latitude': e.latitude
         }
         updateODRegionObject(data).then(res => {
           if (res) {
@@ -106,7 +109,9 @@ export default {
           'regionCircle': e.scopedInfo,
           'regionId': null,
           'regionName': e.event_name,
-          'tollStationList': e.station
+          'tollStationList': e.station,
+          'longitude': e.longitude,
+          'latitude': e.latitude
         }
         insertODRegionObject(data).then(res => {
           if (res) {
@@ -121,6 +126,7 @@ export default {
     },
     getODRegionList() {
       getODRegionList().then(res => {
+        debugger
         this.tableData = res
       })
     }

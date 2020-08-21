@@ -25,10 +25,10 @@ export default {
       type: String,
       default: '200px'
     },
-    tableData: {
-      type: Array,
+    chartOption: {
+      type: Object,
       default: function() {
-        return []
+        return {}
       }
     }
   },
@@ -38,7 +38,7 @@ export default {
     }
   },
   watch: {
-    tableData: {
+    chartOption: {
       handler(n, o) {
         this.initChart()
       },
@@ -57,48 +57,35 @@ export default {
   },
   methods: {
     initChart() {
-      const legendData = ['客车', '货车', '作业车']
-      const seriesData = [
-        { value: 0, name: '客车' },
-        { value: 0, name: '货车' },
-        { value: 0, name: '作业车' }
-      ]
-      for (let i = 0; i < this.tableData.length; i++) {
-        seriesData[0].value += this.tableData[i].kc
-        seriesData[1].value += this.tableData[i].hc
-        seriesData[2].value += this.tableData[i].zyc
-      }
       this.chart = echarts.init(document.getElementById(this.id))
       this.chart.setOption({
         title: {
-          text: '交通组成分析',
+          text: this.chartOption.title,
           left: 'center'
         },
         tooltip: {
-          trigger: 'item',
-          formatter: '{a} <br/>{b} : {c} ({d}%)'
+          trigger: 'axis'
         },
         legend: {
+          data: this.chartOption.legendData,
           bottom: 'bottom',
-          left: 'center',
-          data: legendData
+          left: 'center'
         },
-        series: [
-          {
-            name: '访问来源',
-            type: 'pie',
-            radius: '55%',
-            center: ['50%', '60%'],
-            data: seriesData,
-            emphasis: {
-              itemStyle: {
-                shadowBlur: 10,
-                shadowOffsetX: 0,
-                shadowColor: 'rgba(0, 0, 0, 0.5)'
-              }
-            }
-          }
-        ]
+        grid: {
+          left: '3%',
+          right: '4%',
+          bottom: '10%',
+          containLabel: true
+        },
+        xAxis: {
+          type: 'category',
+          boundaryGap: false,
+          data: this.chartOption.xAxisData
+        },
+        yAxis: {
+          type: 'value'
+        },
+        series: this.chartOption.series
       })
     }
   }

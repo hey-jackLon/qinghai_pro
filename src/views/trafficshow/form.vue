@@ -2,53 +2,55 @@
   <div>
     <el-form ref="form" :inline="true" :model="form" label-width="80px" @submit.native.prevent>
       <el-form-item label="典型区域:">
-        <el-select v-model="form.odRegion" multiple collapse-tags placeholder="请选择典型区域">
-          <el-option v-for="item in events" :key="item.channelId" :label="item.channelName" :value="item.channelId" />
+        <el-select v-model="form.odRegion" placeholder="请选择典型区域">
+          <el-option v-for="item in events" :key="item.regionId" :label="item.regionName" :value="item.regionId" />
         </el-select>
       </el-form-item>
       <el-form-item label="时间粒度:">
-        <el-select v-model="form.intervalId" placeholder="时间粒度" style="width:80px;">
-          <!-- <el-option label="日" value="1" /> -->
-          <el-option label="月" value="6" />
-          <el-option label="年" value="8" />
+        <el-select v-model="form.granularity" placeholder="时间粒度" style="width:80px;">
+          <el-option label="日" value="1" />
+          <el-option label="月" value="2" />
         </el-select>
       </el-form-item>
       <el-form-item label="选择时间:">
         <el-date-picker
-          v-if="form.intervalId === '6'"
-          v-model="form.orderTime"
-          style="width:180px;"
-          type="month"
-          placeholder="请选择月份"
-          value-format="yyyy-MM"
+          v-if="form.granularity === '1'"
+          v-model="form.time"
+          style="width:280px;"
+          type="daterange"
+          range-separator="至"
+          start-placeholder="开始日期"
+          end-placeholder="结束日期"
+          value-format="yyyy-MM-dd"
         />
         <el-date-picker
-          v-if="form.intervalId === '8'"
-          v-model="form.orderTime"
-          style="width:180px;"
-          type="year"
-          placeholder="请选择年份"
-          value-format="yyyy"
+          v-if="form.granularity === '2'"
+          v-model="form.time"
+          style="width:280px;"
+          type="monthrange"
+          range-separator="至"
+          start-placeholder="开始月份"
+          end-placeholder="结束月份"
+          value-format="yyyy-MM"
         />
 
       </el-form-item>
-      <!-- <el-form-item label="方向:">
+      <el-form-item label="方向:">
         <el-radio v-model="form.direction" label="1">进入区域</el-radio>
         <el-radio v-model="form.direction" label="2">离开区域</el-radio>
-      </el-form-item> -->
-      <el-form-item label="指标：">
-        <el-checkbox-group v-model="form.main_target">
-          <el-checkbox label="客车总流量" />
-          <el-checkbox label="客车日均流量" />
-          <el-checkbox label="车型结构" />
-        </el-checkbox-group>
       </el-form-item>
-      <el-form-item label="对比:">
+      <!-- <el-form-item label="指标：">
+        <el-checkbox-group v-model="form.main_target">
+          <el-checkbox label="客货" />
+          <el-checkbox label="车型" />
+        </el-checkbox-group>
+      </el-form-item> -->
+      <!-- <el-form-item label="对比:">
         <el-checkbox-group v-model="form.compare_mode">
           <el-checkbox label="环比" />
           <el-checkbox label="同比" />
         </el-checkbox-group>
-      </el-form-item>
+      </el-form-item> -->
       <el-form-item>
         <el-button type="primary" size="mini" @click="handlerChange()">查询</el-button>
       </el-form-item>
@@ -71,11 +73,12 @@ export default {
   data() {
     return {
       form: {
-        odRegion: [],
-        main_target: [],
-        compare_mode: [],
-        orderTime: '',
-        intervalId: '6'
+        odRegion: '',
+        // main_target: [],
+        // compare_mode: [],
+        time: [],
+        granularity: '1',
+        direction: '1'
       }
     }
   },

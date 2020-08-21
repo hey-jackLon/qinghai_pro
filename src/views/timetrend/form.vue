@@ -1,20 +1,58 @@
 <template>
   <div>
-    <el-form ref="form" :model="form" label-width="80px" @submit.native.prevent>
-      <el-form-item label="重大事件">
-        <el-select v-model="form.event_name" placeholder="请选择重大事件">
-          <el-option v-for="item in events" :key="item.value" :label="item.label" :value="item.value" />
+    <el-form ref="form" :inline="true" :model="form" label-width="80px" @submit.native.prevent>
+      <el-form-item label="典型区域:">
+        <el-select v-model="form.odRegion" placeholder="请选择典型区域">
+          <el-option v-for="item in events" :key="item.channelId" :label="item.channelName" :value="item.channelId" />
         </el-select>
       </el-form-item>
-      <el-form-item label="主要指标">
+      <el-form-item label="时间粒度:">
+        <el-select v-model="form.intervalId" placeholder="时间粒度" style="width:80px;">
+          <!-- <el-option label="日" value="1" /> -->
+          <el-option label="月" value="6" />
+          <!-- <el-option label="年" value="8" /> -->
+        </el-select>
+      </el-form-item>
+      <el-form-item label="选择时间:">
+        <el-date-picker
+          v-if="form.intervalId === '6'"
+          v-model="form.orderTime"
+          style="width:200px;"
+          type="monthrange"
+          range-separator="至"
+          start-placeholder="开始月份"
+          end-placeholder="结束月份"
+          value-format="yyyy-MM"
+        />
+        <!-- <el-date-picker
+          v-if="form.intervalId === '8'"
+          v-model="form.orderTime"
+          style="width:180px;"
+          type="year"
+          placeholder="请选择年份"
+          value-format="yyyy"
+        /> -->
+
+      </el-form-item>
+      <!-- <el-form-item label="方向:">
+        <el-radio v-model="form.direction" label="1">进入区域</el-radio>
+        <el-radio v-model="form.direction" label="2">离开区域</el-radio>
+      </el-form-item> -->
+      <el-form-item label="指标：">
         <el-checkbox-group v-model="form.main_target">
-          <el-checkbox v-for="(item,index) in maintarget" :key="item.value" :checked="index===0?true:false" :label="item.value" name="type">{{ item.label }}</el-checkbox>
+          <el-checkbox label="客车总流量" />
+          <el-checkbox label="客车日均流量" />
+          <el-checkbox label="车型结构" />
         </el-checkbox-group>
       </el-form-item>
-      <el-form-item label="对比分析">
+      <el-form-item label="对比:">
         <el-checkbox-group v-model="form.compare_mode">
-          <el-checkbox v-for="(item,index) in comparemode" :key="item.value" :checked="index===0?true:false" :label="item.value" name="type">{{ item.label }}</el-checkbox>
+          <el-checkbox label="环比" />
+          <el-checkbox label="同比" />
         </el-checkbox-group>
+      </el-form-item>
+      <el-form-item>
+        <el-button type="primary" size="mini" @click="handlerChange()">查询</el-button>
       </el-form-item>
     </el-form>
   </div>
@@ -30,45 +68,30 @@ export default {
       default: function() {
         return []
       }
-    },
-    maintarget: {
-      type: Array,
-      default: function() {
-        return []
-      }
-    },
-    comparemode: {
-      type: Array,
-      default: function() {
-        return []
-      }
     }
   },
   data() {
     return {
       form: {
-        event_name: '',
+        odRegion: '',
         main_target: [],
-        compare_mode: []
+        compare_mode: [],
+        orderTime: [],
+        intervalId: '6'
       }
     }
   },
   watch: {
     form: {
       handler: function(n, o) {
-        this.handlerChange(n)
+        // this.handlerChange(n)
       },
       deep: true
     }
   },
-  created() {
-    if (this.events.length !== 0 && this.maintarget.length !== 0 && this.comparemode.length !== 0) {
-      this.form.event_name = this.events[0].label
-    }
-  },
   methods: {
-    handlerChange(val) {
-      this.$emit('change', val)
+    handlerChange() {
+      this.$emit('change', this.form)
     }
   }
 }

@@ -122,7 +122,8 @@ export default {
       this.view.on('layerview-create', function() {
         var chart = new EchartsLayer(this.view, this.$echarts)
         var option = {
-          series: this.series
+          series: this.series,
+          tooltip: { trigger: 'item' }
         }
         chart.setChartOption(option)
       }.bind(this))
