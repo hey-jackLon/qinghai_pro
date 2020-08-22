@@ -23,6 +23,8 @@ loadScript({
   url: 'https://js.arcgis.com/4.16/dojo/dojo.js'
 })
 loadCss('https://js.arcgis.com/4.16/esri/themes/light/main.css')
+// http://localhost:8080/arcgis_js_v410_api/arcgis_js_api/library/4.10/esri/themes/light/main.css
+// http://localhost:8080/arcgis_js_v410_api/arcgis_js_api/library/4.10/dojo/dojo.js
 /**
  * If you don't want to use mock-server
  * you want to use MockJs for mock api
