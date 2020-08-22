@@ -68,7 +68,7 @@
 
 <script>
 import { getODRegionList, getTollStationList, updateODRegionObject } from '@/api/areamanager/index'
-import ArcgisMap from './map'
+import ArcgisMap from './_map'
 import ehlDialog from './dialog'
 import scopedMap from './scopedmap'
 export default {
