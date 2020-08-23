@@ -20,9 +20,9 @@ import { loadScript } from 'esri-loader'
 import { loadCss } from 'esri-loader'
 // preload the ArcGIS API
 loadScript({
-  url: 'http://localhost:8080/arcgis_js_v416_api/arcgis_js_api/library/4.16/dojo/dojo.js'
+  url: 'http://63.1.21.84:8090/4.16/dojo/dojo.js'
 })
-loadCss('http://localhost:8080/arcgis_js_v416_api/arcgis_js_api/library/4.16/esri/themes/light/main.css')
+loadCss('http://63.1.21.84:8090/4.16/esri/themes/light/main.css')
 // http://localhost:8080/arcgis_js_v410_api/arcgis_js_api/library/4.10/esri/themes/light/main.css
 // http://localhost:8080/arcgis_js_v410_api/arcgis_js_api/library/4.10/dojo/dojo.js
 /**

@@ -1,4 +1,5 @@
-import { login, logout, getInfo } from '@/api/user'
+// import { login, logout, getInfo } from '@/api/user'
+import { logout } from '@/api/user'
 import { getToken, setToken, removeToken } from '@/utils/auth'
 import { resetRouter } from '@/router'
 
@@ -30,13 +31,13 @@ const mutations = {
 const actions = {
   // user login
   login({ commit }, userInfo) {
-    const { username, password } = userInfo
+    // const { username, password } = userInfo
     return new Promise((resolve, reject) => {
       setTimeout(() => {
         commit('SET_TOKEN', 'admin-token')
         setToken('admin-token')
         resolve()
-      }, 3000);
+      }, 10)
       // login({ username: username.trim(), password: password }).then(response => {
       //   const { data } = response
       //   commit('SET_TOKEN', data.token)
@@ -52,10 +53,10 @@ const actions = {
   getInfo({ commit, state }) {
     return new Promise((resolve, reject) => {
       setTimeout(() => {
-        let data = {
+        const data = {
           roles: ['admin'],
           introduction: 'I am a super administrator',
-          avatar: 'https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif',
+          avatar: '',
           name: 'Super Admin'
         }
         const { name, avatar } = data
@@ -63,7 +64,7 @@ const actions = {
         commit('SET_NAME', name)
         commit('SET_AVATAR', avatar)
         resolve(data)
-      }, 1000);
+      }, 1000)
       // getInfo(state.token).then(response => {
       //   const { data } = response
 
@@ -85,14 +86,18 @@ const actions = {
   // user logout
   logout({ commit, state }) {
     return new Promise((resolve, reject) => {
-      logout(state.token).then(() => {
-        removeToken() // must remove  token  first
-        resetRouter()
-        commit('RESET_STATE')
-        resolve()
-      }).catch(error => {
-        reject(error)
-      })
+      removeToken() // must remove  token  first
+      resetRouter()
+      commit('RESET_STATE')
+      resolve()
+      // logout(state.token).then(() => {
+      //   removeToken() // must remove  token  first
+      //   resetRouter()
+      //   commit('RESET_STATE')
+      //   resolve()
+      // }).catch(error => {
+      //   reject(error)
+      // })
     })
   },
 

@@ -56,18 +56,14 @@ export default {
   },
   methods: {
     async initMap() {
-      const [Map, esriConfig, esriRequest, Color, BaseTileLayer, MapView, GraphicsLayer, Graphic, TileLayer] = await loadModules(['esri/Map',
-        'esri/config',
-        'esri/request',
-        'esri/Color',
-        'esri/layers/BaseTileLayer',
+      const [Map, MapView, GraphicsLayer, Graphic, TileLayer] = await loadModules([
+        'esri/Map',
         'esri/views/MapView',
         'esri/layers/GraphicsLayer',
         'esri/Graphic',
         'esri/layers/TileLayer',
         'dojo/domReady!'])
-      const layer = new TileLayer({ url: 'http://63.1.20.191:6080/arcgis/rest/services/qh/china_white_0610/MapServer' });
-
+      const layer = new TileLayer({ url: 'http://63.1.20.191:6080/arcgis/rest/services/qh/china_white_0610/MapServer' })
       this.map = new Map({
         layers: [layer]
       })
