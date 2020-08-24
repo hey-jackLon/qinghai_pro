@@ -1,5 +1,5 @@
 <template>
-  <el-dialog :title="type==='add'?'新增重大事件':'修改重大事件'" width="22%" :visible.sync="dialogFormVisible">
+  <el-dialog :title="type==='add'?'新增旅游通道':'修改旅游通道'" width="22%" :visible.sync="dialogFormVisible">
     <el-form :model="form">
       <el-form-item label="事件名称" :label-width="formLabelWidth">
         <el-input v-model="form.event_name" autocomplete="off" style="width:300px;" />

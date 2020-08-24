@@ -12,16 +12,6 @@
         <el-table-column label="当量数">
           <template slot-scope="scope">{{ scope.row.kc+scope.row.hc+scope.row.zyc }}</template>
         </el-table-column>
-        <!-- <el-table-column label="同比">
-          <template slot-scope="scope">
-            {{ ((scope.row.kc+scope.row.hc+scope.row.zyc)-(scope.row.tbkc+scope.row.tbhc+scope.row.tbzyc))/(scope.row.tbkc+scope.row.tbhc+scope.row.tbzyc) }}
-          </template>
-        </el-table-column>
-        <el-table-column label="环比">
-          <template slot-scope="scope">
-            {{ ((scope.row.kc+scope.row.hc+scope.row.zyc)-(scope.row.hbkc+scope.row.hbhc+scope.row.hbzyc))/(scope.row.hbkc+scope.row.hbhc+scope.row.hbzyc) }}
-          </template>
-        </el-table-column> -->
       </el-table-column>
 
       <el-table-column v-if="checkList.indexOf('客车') !== -1" label="客车">
