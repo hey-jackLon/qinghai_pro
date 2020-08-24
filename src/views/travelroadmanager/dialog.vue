@@ -1,7 +1,7 @@
 <template>
   <el-dialog :title="type==='add'?'新增旅游通道':'修改旅游通道'" width="22%" :visible.sync="dialogFormVisible">
     <el-form :model="form">
-      <el-form-item label="事件名称" :label-width="formLabelWidth">
+      <el-form-item label="通道名称" :label-width="formLabelWidth">
         <el-input v-model="form.event_name" autocomplete="off" style="width:300px;" />
       </el-form-item>
       <el-form-item label="覆盖站点" :label-width="formLabelWidth">
