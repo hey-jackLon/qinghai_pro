@@ -109,6 +109,7 @@ export default {
         }
       }
       doODRegionIndexAnalysis(params, data).then(res => {
+        debugger
         this.tableData = res
         // debugger
       })

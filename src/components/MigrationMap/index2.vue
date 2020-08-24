@@ -20,6 +20,7 @@ export default {
   watch: {
     series: {
       handler(n, o) {
+        // debugger
         this.view.container = null
         this.initMap()
       },
@@ -44,7 +45,7 @@ export default {
         'esri/Color',
         'esri/config',
         'esri/request',
-        'esri/layers/TileLayer',
+        'esri/layers/TileLayer'
       ])
       const EchartsLayer = await echartsLayer()
       // const TintLayer = BaseTileLayer.createSubclass({
@@ -114,7 +115,7 @@ export default {
       //   tint: new Color('#004FBB'),
       //   title: '高德'
       // })
-      const layer = new TileLayer({ url: 'http://63.1.20.191:6080/arcgis/rest/services/qh/china_white_0610/MapServer' });
+      const layer = new TileLayer({ url: 'http://63.1.20.191:6080/arcgis/rest/services/qh/china_white_0610/MapServer' })
 
       const customBasemap = new Basemap({
         baseLayers: [layer],

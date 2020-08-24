@@ -15,16 +15,14 @@ import '@/icons' // icon
 import '@/permission' // permission control
 
 import echarts from 'echarts'
-
+import { ACRGIS_API } from '@/utils/base-variable'
+// preload the ArcGIS API
 import { loadScript } from 'esri-loader'
 import { loadCss } from 'esri-loader'
-// preload the ArcGIS API
-loadScript({
-  url: 'http://63.1.21.84:8090/4.16/dojo/dojo.js'
-})
-loadCss('http://63.1.21.84:8090/4.16/esri/themes/light/main.css')
-// http://localhost:8080/arcgis_js_v410_api/arcgis_js_api/library/4.10/esri/themes/light/main.css
-// http://localhost:8080/arcgis_js_v410_api/arcgis_js_api/library/4.10/dojo/dojo.js
+loadScript({ url: ACRGIS_API + '/4.16/dojo/dojo.js' })
+// debugger
+loadCss(ACRGIS_API + '/4.16/esri/themes/light/main.css')
+
 /**
  * If you don't want to use mock-server
  * you want to use MockJs for mock api

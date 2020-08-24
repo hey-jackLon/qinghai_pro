@@ -76,16 +76,18 @@ export default {
         odRegion: '',
         // main_target: [],
         // compare_mode: [],
-        time: [],
+        time: ['2020-06-01', '2020-07-31'],
         granularity: '1',
         direction: '1'
       }
     }
   },
   watch: {
-    form: {
+    events: {
       handler: function(n, o) {
         // this.handlerChange(n)
+        this.form.odRegion = n[0].regionId
+        this.$emit('change', this.form)
       },
       deep: true
     }

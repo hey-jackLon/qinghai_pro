@@ -114,7 +114,7 @@ export default {
         const graphic = new this.Graphic({
           geometry: {
             type: circleData.type,
-            spatialReference: { 'latestWkid': 3857, 'wkid': 102100 },
+            spatialReference: { 'latestWkid': 4326, 'wkid': 102100 },
             rings: circleData.path
           },
           symbol: {

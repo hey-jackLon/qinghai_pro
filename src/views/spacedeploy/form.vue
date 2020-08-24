@@ -73,16 +73,17 @@ export default {
       form: {
         odRegion: [],
         main_target: [],
-        compare_mode: [],
-        orderTime: '',
+        compare_mode: ['同比', '环比'],
+        orderTime: '2020-08',
         intervalId: '6'
       }
     }
   },
   watch: {
-    form: {
+    events: {
       handler: function(n, o) {
-        // this.handlerChange(n)
+        this.form.odRegion.push(n[0].channelId)
+        this.$emit('change', this.form)
       },
       deep: true
     }

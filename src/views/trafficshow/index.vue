@@ -55,7 +55,7 @@ export default {
       }
       // debugger
       doODRegionRadiation(params, data).then(res => {
-        debugger
+        // debugger
         this.seriesData = makeData([data.regionName, res], this.geoCoordMap)
       })
     }

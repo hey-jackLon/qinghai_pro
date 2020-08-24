@@ -30,10 +30,10 @@ export default {
   created() {
     this.getODRegionList()
     getTollStationList().then(res => {
-      for (let i = 0; i < res.length; i++) {
-        res[i].stationlatitude = 37 + Number(Math.random().toFixed(6))
-        res[i].stationlongitude = 101 + Number(Math.random().toFixed(6))
-      }
+      // for (let i = 0; i < res.length; i++) {
+      //   res[i].stationlatitude = 37 + Number(Math.random().toFixed(6))
+      //   res[i].stationlongitude = 101 + Number(Math.random().toFixed(6))
+      // }
       this.stationData = res
     })
   },

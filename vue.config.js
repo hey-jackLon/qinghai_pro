@@ -24,7 +24,7 @@ module.exports = {
    * In most cases please use '/' !!!
    * Detail: https://cli.vuejs.org/config/#publicpath
    */
-  publicPath: '/',
+  publicPath: './',
   outputDir: 'dist',
   assetsDir: 'static',
   lintOnSave: process.env.NODE_ENV === 'development',
@@ -35,8 +35,8 @@ module.exports = {
     overlay: {
       warnings: false,
       errors: true
-    },
-    proxy: 'http://39.107.226.8:8998'
+    }
+    // proxy: 'http://39.107.226.8:8998'
     // proxy: 'http://10.2.115.35:8998'
   },
   configureWebpack: {
