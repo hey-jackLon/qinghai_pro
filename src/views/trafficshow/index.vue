@@ -124,6 +124,7 @@ export default {
         '宜宾': [104.56, 29.77],
         '呼和浩特': [111.65, 40.82],
         '成都': [104.06, 30.67],
+        '省外': [104.06, 30.67],
         '大同': [113.3, 40.12],
         '镇江': [119.44, 32.2],
         '桂林': [110.28, 25.29],
@@ -210,19 +211,7 @@ export default {
         '合肥': [117.27, 31.86],
         '武汉': [114.31, 30.52],
         '大庆': [125.03, 46.58]
-      },
-      BJData: [
-        [{ name: '北京' }, { name: '上海', value: 95 }]
-
-      ],
-      SHData: [
-        [{ name: '上海' }, { name: '包头', value: 95 }]
-
-      ],
-      GZData: [
-        [{ name: '广州' }, { name: '福州', value: 95 }]
-
-      ]
+      }
     }
   },
   created() {
@@ -257,13 +246,13 @@ export default {
         params.endtime = e.time[1]
       }
       doODRegionRadiation(params, data).then(res => {
-        // debugger
-        // debugger
+       // debugger
         if (params.direction === '1') {
-          const arr = [['北京', this.BJData], ['广州', this.GZData], ['上海', this.SHData]]
-          // for (let i = 0; i < res.length; i++) {
-          //   arr.push([res[i][0].name, [res[i]]])
-          // }
+          // const arr = [['北京', this.BJData], ['广州', this.GZData], ['上海', this.SHData]]
+          const arr = []
+          for (let i = 0; i < res.length; i++) {
+            arr.push([res[i][0].name, [res[i]]])
+          }
 
           this.seriesData = makeData(arr, this.geoCoordMap)
         } else {
