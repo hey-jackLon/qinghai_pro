@@ -20,7 +20,6 @@ import { ACRGIS_API } from '@/utils/base-variable'
 import { loadScript } from 'esri-loader'
 import { loadCss } from 'esri-loader'
 loadScript({ url: ACRGIS_API + '/4.16/dojo/dojo.js' })
-// debugger
 loadCss(ACRGIS_API + '/4.16/esri/themes/light/main.css')
 
 /**

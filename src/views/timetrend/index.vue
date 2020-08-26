@@ -110,7 +110,6 @@ export default {
       params.startDate = e.orderTime[0]
       params.intervalId = e.intervalId
       getChannelTimeAnalysis(params, data).then(res => {
-        // debugger
         for (let i = 0; i < res.length; i++) {
           for (let k = 0; k < this.events.length; k++) {
             if (res[i].CHANNEL_ID === this.events[k].channelId) {

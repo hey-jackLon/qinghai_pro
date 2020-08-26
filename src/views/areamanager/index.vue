@@ -47,13 +47,14 @@ export default {
       this.form = Object.assign({})
     },
     handUpdate(e) {
-      // debugger
       this.isOpen = true
       this.type = 'modify'
       this.form = {
         regionId: e.row.regionId,
         scopedInfo: e.row.regionCircle,
         event_name: e.row.regionName,
+        longitude: e.row.longitude,
+        latitude: e.row.latitude,
         // time: [e.row.eventStime, e.row.eventEtime],
         station: e.row.tollStationList
       }
@@ -89,7 +90,6 @@ export default {
       this.isOpen = e
     },
     dialogConfirm(e) {
-      // debugger
       if (e.regionId) {
         const data = {
           'regionCircle': e.scopedInfo,

@@ -77,7 +77,6 @@ export default {
   },
   methods: {
     change(e) {
-      // debugger
       this.doODRegionIndexAnalysis(e)
     },
     doODRegionIndexAnalysis(val) {
@@ -109,9 +108,7 @@ export default {
         }
       }
       doODRegionIndexAnalysis(params, data).then(res => {
-        debugger
         this.tableData = res
-        // debugger
       })
     }
   }

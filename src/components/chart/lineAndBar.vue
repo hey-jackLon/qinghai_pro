@@ -76,7 +76,6 @@ export default {
   watch: {
     chartOption: {
       handler(n, o) {
-        // debugger
         this.initChart()
       },
       deep: true
@@ -96,7 +95,6 @@ export default {
     initChart() {
       this.chart = echarts.init(document.getElementById(this.id))
       const obj = Object.assign(this.option, this.chartOption)
-      // debugger
       this.chart.setOption(obj)
     }
   }

@@ -20,7 +20,6 @@ export default {
   watch: {
     series: {
       handler(n, o) {
-        // debugger
         this.view.container = null
         this.initMap()
       },

@@ -145,7 +145,6 @@ export default {
           })
           data.longitude = that.scopedInfo.geometry.extent.center.longitude
           data.latitude = that.scopedInfo.geometry.extent.center.latitude
-          // debugger
           this.circleData = data.regionCircle
           that.updateODRegionObject(data)
           that.Visible2 = false

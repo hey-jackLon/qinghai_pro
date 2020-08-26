@@ -101,7 +101,6 @@ export default {
       view.on(['click'], function(event) {
         view.hitTest(event).then(function(response) {
           if (response.results.length) {
-            //  debugger
             var graphic = response.results.filter(function(result) {
               return result.graphic.layer === layer
             })[0].graphic

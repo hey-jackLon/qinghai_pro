@@ -1,7 +1,7 @@
 <template>
   <div class="dashboard-container">
     <con-form :events="events" @change="change" @mainTargetChange="mainTargetChange" />
-    <con-table :table-data="tableData" :main-target="main_target" @rowClick="handlerRowClick" />
+    <con-table :table-data="tableData" :main-target="main_target" :compare-mode="compareMode" @rowClick="handlerRowClick" />
     <div style="width:100%;display:flex;">
       <div style="width:50%;height:350px;">
         <chart-line id="chartline" width="100%" height="100%" :chart-option="lineoption" />
@@ -32,6 +32,7 @@ export default {
       events: [],
       tableData: null,
       main_target: [],
+      compareMode: [],
       lineoption: {
         title: ''
       },
@@ -93,6 +94,7 @@ export default {
       }
 
       getEventAnalysis(params, data).then(res => {
+        this.compareMode = e.compare_mode
         this.tableData = res
         this.lineoption.title = `${data.eventName}${res[0].GCRQ}-${res[res.length - 1].GCRQ}交通量变化趋势`
         this.lineoption.legendData = ['交通量', '汽车', '货车', '客车']

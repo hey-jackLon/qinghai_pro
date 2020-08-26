@@ -68,8 +68,6 @@ export default {
         series1Data.push(this.tableData[i].hc)
         series2Data.push(this.tableData[i].zyc)
       }
-      // this.tableData
-      // debugger
       this.chart = echarts.init(document.getElementById(this.id))
       this.chart.setOption({
         title: {

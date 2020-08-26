@@ -161,7 +161,6 @@ export default {
     },
     form: {
       handler: function(n, o) {
-        // debugger
       },
       deep: true
     }

@@ -1,6 +1,5 @@
 
 var convertData = function(data, geoCoordMap) {
-  // debugger
   var res = []
   for (var i = 0; i < data.length; i++) {
     var dataItem = data[i]
@@ -19,7 +18,6 @@ var convertData = function(data, geoCoordMap) {
 }
 
 function makeData(arr, geoCoordMap) {
- // debugger
   var series = []
   const data = [...arr]
   data.forEach(function(item, i) {

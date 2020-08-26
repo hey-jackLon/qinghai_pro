@@ -105,7 +105,6 @@ export default {
     },
     getMajorEventList() {
       getMajorEventList().then(res => {
-        // debugger
         this.tableData = res
       })
     }

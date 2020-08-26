@@ -246,7 +246,6 @@ export default {
         params.endtime = e.time[1]
       }
       doODRegionRadiation(params, data).then(res => {
-       // debugger
         if (params.direction === '1') {
           // const arr = [['北京', this.BJData], ['广州', this.GZData], ['上海', this.SHData]]
           const arr = []

@@ -60,7 +60,6 @@ export default {
       this.view.ui.add(this.sketch, 'top-right')
       this.sketch.on('create', function(event) {
         if (event.state === 'complete') {
-          // debugger
           if (!this.scopedObject) {
             this.scopedObject = event.graphic
             this.$emit('getScopedInfo', event.graphic)
