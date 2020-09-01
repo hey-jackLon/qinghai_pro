@@ -15,10 +15,26 @@
             type="index"
           />
           <el-table-column
-            prop="name"
             label="行政区"
-            width="180"
-          />
+            width="200"
+          >
+            <template slot-scope="scope">
+              {{ scope.row.name }}
+              <el-popover
+                placement="right"
+                width="400"
+                trigger="click"
+              >
+                <el-table :data="scope.row.info" height="400">
+                  <el-table-column width="120" property="date" label="时间" />
+                  <el-table-column property="stationname" label="站点名" />
+                  <el-table-column property="reason" label="原因" />
+                </el-table>
+                <!-- <el-button slot="reference">click 激活</el-button> -->
+                <svg-icon v-show="scope.row.info.length > 0" slot="reference" icon-class="tip" style="width:20px;height:20px;" />
+              </el-popover>
+            </template>
+          </el-table-column>
           <el-table-column
             prop="kc"
             label="客车"
